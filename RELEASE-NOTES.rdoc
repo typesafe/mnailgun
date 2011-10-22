@@ -1,0 +1,5 @@
+= mnailgun Release Notes
+
+== Latest Version (0.1.0)
+
+- The initial version that allows you to send (mail) messages using your Mailgun domaing and api key.

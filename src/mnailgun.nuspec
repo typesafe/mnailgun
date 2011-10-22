@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>mnailgun</id>
+		<version>0.1</version>
+		<authors>Gino Heyman</authors>
+		<owners>Gino Heyman</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<description>A simple .Net wrapper library for the Mailgun API.</description>
+		<summary>Provides simple access to Mailgun's REST API for .Net applications.</summary>
+		<tags>mailgun email</tags>
+		<dependencies>
+			<dependency id="Newtonsoft.Json" version="4.0.3" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src="..\bin\Typesafe.Mailgun.dll" target="lib\4.0" />
+		<file src="..\bin\Typesafe.Mailgun.xml" target="lib\4.0" />
+	</files>
+</package>

@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MailMessageBuilder.cs" />
     <Compile Include="When_sending_an_email_message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="When_sending_an_email_message_for_a_non_existing_domain.cs" />
