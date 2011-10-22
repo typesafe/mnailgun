@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun.Tests", "Typesafe.Mailgun.Tests\Typesafe.Mailgun.Tests.csproj", "{7FA60929-7721-47DC-B9DC-39643E3B9D36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun", "Typesafe.Mailgun\Typesafe.Mailgun.csproj", "{38A5D96D-36BC-4F37-9477-CD18FB32563B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FA60929-7721-47DC-B9DC-39643E3B9D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FA60929-7721-47DC-B9DC-39643E3B9D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FA60929-7721-47DC-B9DC-39643E3B9D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FA60929-7721-47DC-B9DC-39643E3B9D36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38A5D96D-36BC-4F37-9477-CD18FB32563B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38A5D96D-36BC-4F37-9477-CD18FB32563B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38A5D96D-36BC-4F37-9477-CD18FB32563B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38A5D96D-36BC-4F37-9477-CD18FB32563B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
