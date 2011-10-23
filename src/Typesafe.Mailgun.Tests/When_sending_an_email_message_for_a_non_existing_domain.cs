@@ -10,9 +10,7 @@ namespace Typesafe.Mailgun.Tests
 		[Test]
 		public void an_entry_point_not_found_exception_should_be_thrown()
 		{
-			var client = new MailgunClient("idonotexist", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
-
-			Assert.Throws<InvalidOperationException>(() => client.SendMail(MailMessageBuilder.CreateMailWithoutAttachments()));
+			Assert.Throws<InvalidOperationException>(() => MailgunClientBuilder.GetClient().SendMail(MailMessageBuilder.CreateMailWithoutAttachments()));
 		}
 	}
 }

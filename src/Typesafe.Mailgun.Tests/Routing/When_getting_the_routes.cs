@@ -8,10 +8,8 @@ namespace Typesafe.Mailgun.Tests.Routing
 		[Test]
 		public void a_list_of_routes_should_be_returned()
 		{
-			var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
-
 			int count;
-			var routes = client.GetRoutes(0, 10, out count);
+			var routes = MailgunClientBuilder.GetClient().GetRoutes(0, 10, out count);
 
 			Assert.IsTrue(count > 0);
 

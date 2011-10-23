@@ -52,9 +52,11 @@
     <Compile Include="Mailboxes\When_creating_a_mailbox.cs" />
     <Compile Include="Mailboxes\When_deleting_a_mailbox.cs" />
     <Compile Include="Mailboxes\When_querying_the_mailboxes.cs" />
+    <Compile Include="MailgunClientBuilder.cs" />
     <Compile Include="MailMessageBuilder.cs" />
     <Compile Include="Routing\When_creating_a_route.cs" />
     <Compile Include="Routing\When_creating_a_route_for_another_domain.cs" />
+    <Compile Include="Routing\When_creating_a_route_for_a_web_hook.cs" />
     <Compile Include="Routing\When_deleting_a_route.cs" />
     <Compile Include="When_getting_the_latest_stats.cs" />
     <Compile Include="Routing\When_getting_the_routes.cs" />

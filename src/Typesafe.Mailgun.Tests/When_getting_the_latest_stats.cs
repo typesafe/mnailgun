@@ -8,10 +8,8 @@ namespace Typesafe.Mailgun.Tests
 		[Test]
 		public void a_list_of_events_should_be_returned()
 		{
-			var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
-
 			int count;
-			var e = client.GetStats(out count);
+			var e = MailgunClientBuilder.GetClient().GetStats(0, 100, MailgunEventTypes.Sent, out count);
 
 			Assert.IsTrue(count > 0);
 		}
