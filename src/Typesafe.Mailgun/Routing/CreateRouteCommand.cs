@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using Typesafe.Mailgun.Extensions.HttpWebResponse;
 using Typesafe.Mailgun.Extensions.Json;
 using Typesafe.Mailgun.Http;
 
@@ -36,10 +34,9 @@ namespace Typesafe.Mailgun.Routing
 			return formParts;
 		}
 
-		public override CreateRouteCommandResult TranslateResponse(HttpWebResponse response)
+		public override CreateRouteCommandResult TranslateResponse(MailgunHttpResponse response)
 		{
-			var json = response.BodyAsJson();
-			return new CreateRouteCommandResult(json.message.Value, ((object)json.route).ToRoute());
+			return new CreateRouteCommandResult(response.Message, ((object)response.Body.route).ToRoute());
 		}
 	}
 }

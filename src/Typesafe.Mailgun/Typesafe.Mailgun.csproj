@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeleteCommand.cs" />
+    <Compile Include="Http\MailgunHttpResponse.cs" />
     <Compile Include="Mailboxes\CreateMailboxCommand.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -57,7 +58,6 @@
     <Compile Include="Http\FormPart.cs" />
     <Compile Include="Http\SimpleFormPart.cs" />
     <Compile Include="Http\FormPartExtensions.cs" />
-    <Compile Include="Extensions\HttpWebResponse\JsonExtensions.cs" />
     <Compile Include="IMailgunAccountInfo.cs" />
     <Compile Include="MailgunClient.cs" />
     <Compile Include="Http\MailgunHttpRequest.cs" />

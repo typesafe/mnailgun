@@ -1,5 +1,4 @@
-using System.Net;
-using Typesafe.Mailgun.Extensions.HttpWebResponse;
+using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
 {
@@ -7,9 +6,9 @@ namespace Typesafe.Mailgun
 	{
 		protected MailgunCommand(IMailgunAccountInfo accountInfo, string path, string httpVerb = "POST") : base(accountInfo, path, httpVerb) { }
 
-		public override CommandResult TranslateResponse(HttpWebResponse response)
+		public override CommandResult TranslateResponse(MailgunHttpResponse response)
 		{
-			return new CommandResult(response.BodyAsJson().message.Value);
+			return new CommandResult(response.Message);
 		}
 	}
 }

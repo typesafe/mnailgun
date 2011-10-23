@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using Typesafe.Mailgun.Extensions.HttpWebResponse;
 using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
@@ -20,7 +18,7 @@ namespace Typesafe.Mailgun
 
 		public IEnumerable<T> Execute(int skip, int take, out int count)
 		{
-			var json = ExecuteRequest(skip, take).BodyAsJson();
+			var json = ExecuteRequest(skip, take).Body;
 
 			count = (int)json.total_count.Value;
 
@@ -38,7 +36,7 @@ namespace Typesafe.Mailgun
 			get { return Enumerable.Empty<KeyValuePair<string, string>>(); }
 		}
 
-		private HttpWebResponse ExecuteRequest(int skip, int take)
+		private MailgunHttpResponse ExecuteRequest(int skip, int take)
 		{
 			var url = string.Format("{0}?skip={1}&take={2}", path, skip, take);
 			foreach (var additionalParameter in AdditionalParameters)

@@ -21,15 +21,15 @@ namespace Typesafe.Mailgun.Http
 			request.Headers.Add("Authorization", "basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("api:{0}", accountInfo.ApiKey))));
 		}
 
-		public HttpWebResponse GetResponse()
+		public MailgunHttpResponse GetResponse()
 		{
 			try
 			{
-				return request.GetResponse() as HttpWebResponse;
+				return new MailgunHttpResponse(request.GetResponse() as HttpWebResponse);
 			}
 			catch (WebException ex)
 			{
-				return ex.Response as HttpWebResponse;
+				return new MailgunHttpResponse(ex.Response as HttpWebResponse);
 			}
 		}
 

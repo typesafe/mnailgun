@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Authentication;
-using Typesafe.Mailgun.Extensions.HttpWebResponse;
 using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
@@ -35,13 +34,13 @@ namespace Typesafe.Mailgun
 			return TranslateResponse(response);
 		}
 
-		private static void ThrowIfBadStatusCode(HttpWebResponse response)
+		private static void ThrowIfBadStatusCode(MailgunHttpResponse response)
 		{
 			if (response.StatusCode == HttpStatusCode.Unauthorized) throw new AuthenticationException();
 
 			if (response.StatusCode >= HttpStatusCode.InternalServerError) throw new Exception("Internal Server Error");
 
-			if (response.StatusCode >= HttpStatusCode.BadRequest) throw new InvalidOperationException(response.BodyAsJson().message.Value);
+			if (response.StatusCode >= HttpStatusCode.BadRequest) throw new InvalidOperationException(response.Message);
 		}
 
 		protected virtual IEnumerable<FormPart> CreateFormParts()
@@ -49,6 +48,6 @@ namespace Typesafe.Mailgun
 			return Enumerable.Empty<FormPart>();
 		}
 
-		public abstract T TranslateResponse(HttpWebResponse response);
+		public abstract T TranslateResponse(MailgunHttpResponse response);
 	}
 }

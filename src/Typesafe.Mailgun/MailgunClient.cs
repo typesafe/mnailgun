@@ -26,15 +26,12 @@ namespace Typesafe.Mailgun
 
 		public string ApiKey { get; private set; }
 
-		public IEnumerable<MailgunStatEntry> GetStats(out int count)
+
+		public CommandResult SendMail(MailMessage mailMessage)
 		{
-			return GetStats(0, 100, MailgunEventTypes.Sent, out count);
+			return new SendMailCommand(this, mailMessage).Invoke();
 		}
 
-		public IEnumerable<MailgunStatEntry> GetStats(int skip, int take, MailgunEventTypes eventTypes, out int count)
-		{
-			return new MailgunStatsQuery(this, eventTypes).Execute(skip, take, out count);
-		}
 
 		public IEnumerable<Route> GetRoutes(int skip, int take, out int count)
 		{
@@ -46,10 +43,17 @@ namespace Typesafe.Mailgun
 			return new CreateRouteCommand(this, priority, description, expression, actions).Invoke().Route;
 		}
 
-		public CommandResult SendMail(MailMessage mailMessage)
+		public CommandResult DeleteRoute(string routeId)
 		{
-			return new SendMailCommand(this, mailMessage).Invoke();
+			return new DeleteCommand(this, "../routes/" + routeId).Invoke();
 		}
+
+
+		public IEnumerable<MailgunStatEntry> GetStats(int skip, int take, MailgunEventTypes eventTypes, out int count)
+		{
+			return new MailgunStatsQuery(this, eventTypes).Execute(skip, take, out count);
+		}
+
 
 		public CommandResult CreateMailbox(string name, string password)
 		{
@@ -64,11 +68,6 @@ namespace Typesafe.Mailgun
 		public IEnumerable<Mailbox> GetMailboxes(int skip, int take, out int count)
 		{
 			return new MailgunMailboxQuery(this).Execute(skip, take, out count);
-		}
-
-		public CommandResult DeleteRoute(string routeId)
-		{
-			return new DeleteCommand(this, "../routes/" + routeId).Invoke();
 		}
 	}
 }
