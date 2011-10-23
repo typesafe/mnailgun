@@ -5,10 +5,8 @@ namespace Typesafe.Mailgun.Statistics
 	/// <summary>
 	/// 
 	/// </summary>
-	public class MailgunStatEntry
+	public class MailgunStatEntry : MailgunResource
 	{
-		public string Id { get; set; }
-
 		public DateTime Date { get; set; }
 
 		public MailgunEventTypes EventType { get; set; }

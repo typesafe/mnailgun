@@ -2,13 +2,8 @@ using System;
 
 namespace Typesafe.Mailgun.Routing
 {
-	/// <summary>
-	/// 
-	/// </summary>
-	public class Route
+	public class Route : MailgunResource
 	{
-		public string Id { get; set; }
-
 		public DateTime CreatedAt { get; set; }
 
 		public int Priority { get; set; }

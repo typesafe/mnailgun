@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeleteCommand.cs" />
+    <Compile Include="Mailboxes\CreateMailboxCommand.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Mailboxes\Mailbox.cs" />
+    <Compile Include="Mailboxes\MailgunMailboxQuery.cs" />
     <Compile Include="MailgunCommand.cs" />
     <Compile Include="CommandResult.cs" />
     <Compile Include="Extensions\Json\ConversionExtensions.cs" />
@@ -57,6 +63,7 @@
     <Compile Include="Http\MailgunHttpRequest.cs" />
     <Compile Include="MailgunCommand`1.cs" />
     <Compile Include="MailgunQuery.cs" />
+    <Compile Include="MailgunResource.cs" />
     <Compile Include="Routing\CreateRouteCommand.cs" />
     <Compile Include="Routing\CreateRouteCommandResult.cs" />
     <Compile Include="Routing\MailgunRouteQuery.cs" />
