@@ -1,43 +1,61 @@
-= About mnailgun
+About mnailgun
+==============
 
 mnailgun is a wrapper library for the Mailgun REST API. It provides a MailgunClient class
 that allows you to send messages, register domains, create mailboxes, manage routes, etc.
 
-= How to use?
+Installing mnailgun
+-------------------
 
-== Install
+For now, get the code and build it (if you've got ruby/IronRuby installed it's as simple
+as `> rake` on the command line.
 
 No nuget package yet. Shouldn't take to long.
 
-== General
+Getting started
+---------------
 
-The mailgun API is exposed through a MilgunClient class 
+The mailgun API is exposed through the `Typesafe.MailgunClient`. All supported operations are 
+exposed thorugh this client.
 
-var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
+	var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
+	
+	// use client to send mail, create routes, etc.
 
-== Sending a mail message
+Sending a mail message
+----------------------
 
- var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
- client.SendMail(new System.Net.MailMessage("gino@samples.mailgun.org", "gino.heyman@gmail.com") 
- {
-    Subject = "Hello from mailgun",
-    Body = "this is a test message from mailgun."
- });
+The `SendMail` method accepts a regular .Net `System.Net.MailMessage` instance. From, To, Cc, Bcc, 
+Body text, attachments are all translated to a mailgun message.
 
-== Sending a mail message with attachments
+	client.SendMail(new System.Net.MailMessage("gino@samples.mailgun.org", "gino.heyman@gmail.com") 
+	{
+		Subject = "Hello from mailgun",
+		Body = "this is a test message from mailgun."
+	});
 
- var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
- client.SendMail(new System.Net.MailMessage("gino@samples.mailgun.org", "gino.heyman@gmail.com") 
- {
-    Subject = "Hello from mailgun",
-    Body = "this is a test message from mailgun."
- });
+Managing Routes and Mailboxes
+-----------------------------
 
-== What else
+MailgunClient provides the following Route-related operations:
 
-Coming soon :-)
+	IEnumerable<Route> GetRoutes(int skip, int take, out int count)
+	Route CreateRoute(int priority, string description, RouteFilter expression, params RouteAction[] actions)
+	void DeleteRoute(string routeId)
 
-= License
+Mailboxes can be managed just the same:
+
+	Mailbox CreateMailbox(string name, string password)
+	void DeleteMailbox(string name)
+	IEnumerable<Mailbox> GetMailboxes(int skip, int take, out int count)
+
+Getting statistics
+------------------
+
+Stats can be retrieved with `GetStats` method of the MailgunClient.
+
+License
+=======
 
 Copyright (c) 2011 Gino Heyman.
 
