@@ -9,7 +9,22 @@ that allows you to send messages, register domains, create mailboxes, manage rou
 
 No nuget package yet. Shouldn't take to long.
 
-== Sending a message
+== General
+
+The mailgun API is exposed through a MilgunClient class 
+
+var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
+
+== Sending a mail message
+
+ var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
+ client.SendMail(new System.Net.MailMessage("gino@samples.mailgun.org", "gino.heyman@gmail.com") 
+ {
+    Subject = "Hello from mailgun",
+    Body = "this is a test message from mailgun."
+ });
+
+== Sending a mail message with attachments
 
  var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
  client.SendMail(new System.Net.MailMessage("gino@samples.mailgun.org", "gino.heyman@gmail.com") 
