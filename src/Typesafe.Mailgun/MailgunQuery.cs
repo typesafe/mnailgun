@@ -6,7 +6,7 @@ using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
 {
-	internal abstract class MailgunQuery<T>
+	internal abstract class MailgunQuery<T> where T : MailgunResource
 	{
 		private readonly string path;
 

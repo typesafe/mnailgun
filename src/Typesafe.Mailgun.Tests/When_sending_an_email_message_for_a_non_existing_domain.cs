@@ -12,7 +12,7 @@ namespace Typesafe.Mailgun.Tests
 		{
 			var client = new MailgunClient("idonotexist", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
 
-			Assert.Throws<EntryPointNotFoundException>(() => client.SendMail(MailMessageBuilder.CreateMailWithoutAttachments()));
+			Assert.Throws<InvalidOperationException>(() => client.SendMail(MailMessageBuilder.CreateMailWithoutAttachments()));
 		}
 	}
 }
