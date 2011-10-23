@@ -2,13 +2,16 @@ using System;
 using System.IO;
 using System.Net.Mail;
 
-namespace Typesafe.Mailgun.Extensions.HttpWebRequest
+namespace Typesafe.Mailgun.Http
 {
-	public class AttachmentSimpleFormPart : FormPart
+	/// <summary>
+	/// Represents an multipart form part for a file attachment.
+	/// </summary>
+	public class AttachmentFormPart : FormPart
 	{
 		private readonly Attachment attachment;
 
-		public AttachmentSimpleFormPart(Attachment attachment)
+		public AttachmentFormPart(Attachment attachment)
 		{
 			this.attachment = attachment;
 		}

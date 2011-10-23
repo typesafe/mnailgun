@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Typesafe.Mailgun.Extensions.HttpWebRequest
+namespace Typesafe.Mailgun.Http
 {
 	public static class FormPartExtensions
 	{

@@ -44,17 +44,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\HttpWebRequest\AttachmentSimpleFormPart.cs" />
-    <Compile Include="Extensions\HttpWebRequest\FormPart.cs" />
-    <Compile Include="Extensions\HttpWebRequest\SimpleFormPart.cs" />
-    <Compile Include="Extensions\HttpWebRequest\FormPartExtensions.cs" />
+    <Compile Include="MailgunCommand.cs" />
+    <Compile Include="CommandResult.cs" />
+    <Compile Include="Extensions\Json\ConversionExtensions.cs" />
+    <Compile Include="Http\AttachmentFormPart.cs" />
+    <Compile Include="Http\FormPart.cs" />
+    <Compile Include="Http\SimpleFormPart.cs" />
+    <Compile Include="Http\FormPartExtensions.cs" />
     <Compile Include="Extensions\HttpWebResponse\JsonExtensions.cs" />
+    <Compile Include="IMailgunAccountInfo.cs" />
     <Compile Include="MailgunClient.cs" />
+    <Compile Include="Http\MailgunHttpRequest.cs" />
+    <Compile Include="MailgunCommand`1.cs" />
+    <Compile Include="MailgunQuery.cs" />
+    <Compile Include="Routing\CreateRouteCommand.cs" />
+    <Compile Include="Routing\CreateRouteCommandResult.cs" />
+    <Compile Include="Routing\MailgunRouteQuery.cs" />
+    <Compile Include="SendMailCommand.cs" />
+    <Compile Include="Statistics\MailgunStatEntry.cs" />
+    <Compile Include="MailgunEventTypes.cs" />
+    <Compile Include="Statistics\MailgunStatsQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routing\Route.cs" />
+    <Compile Include="Routing\RouteAction.cs" />
+    <Compile Include="Routing\RouteFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

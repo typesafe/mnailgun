@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
+
+namespace Typesafe.Mailgun.Http
+{
+	internal class MailgunHttpRequest
+	{
+		private readonly string boundary = Guid.NewGuid().ToString("N");
+
+		private readonly HttpWebRequest request;
+
+		public MailgunHttpRequest(IMailgunAccountInfo accountInfo, string method, string relativePath)
+		{
+			request = WebRequest.Create(new Uri(accountInfo.DomainBaseUrl, relativePath)) as HttpWebRequest;
+			request.Method = method;
+
+			// Note: ensure no preceding 401, request.PreAuthenticate does not work as you might expect
+			request.Headers.Add("Authorization", "basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("api:{0}", accountInfo.ApiKey))));
+		}
+
+		public HttpWebResponse GetResponse()
+		{
+			try
+			{
+				return request.GetResponse() as HttpWebResponse;
+			}
+			catch (WebException ex)
+			{
+				return ex.Response as HttpWebResponse;
+			}
+		}
+
+		public void SetFormParts(IEnumerable<FormPart> parts)
+		{
+			request.ContentType = "multipart/form-data; boundary=" + boundary;
+
+			using (var writer = new StreamWriter(request.GetRequestStream()))
+			{
+				foreach (var part in parts) part.WriteTo(writer, boundary);
+
+				writer.Write("--{0}--", boundary);
+			}
+		}
+	}
+}

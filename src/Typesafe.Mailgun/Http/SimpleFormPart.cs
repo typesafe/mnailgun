@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace Typesafe.Mailgun.Extensions.HttpWebRequest
+namespace Typesafe.Mailgun.Http
 {
 	public class SimpleFormPart : FormPart
 	{

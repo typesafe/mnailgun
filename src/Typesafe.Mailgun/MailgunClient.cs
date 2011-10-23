@@ -1,74 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Mail;
-using System.Security.Authentication;
-using System.Text;
-using Typesafe.Mailgun.Extensions.HttpWebRequest;
-using Typesafe.Mailgun.Extensions.HttpWebResponse;
+using Typesafe.Mailgun.Extensions.Json;
+using Typesafe.Mailgun.Routing;
+using Typesafe.Mailgun.Statistics;
 
 namespace Typesafe.Mailgun
 {
-	public class MailgunClient
+	/// <summary>
+	/// Provides access to the Mailgun REST API.
+	/// </summary>
+	public class MailgunClient : IMailgunAccountInfo
 	{
-		private readonly string apiKey;
-		private readonly Uri baseUrl;
-
+		/// <summary>
+		/// Initializes a new client for the specified domain and api key.
+		/// </summary>
 		public MailgunClient(string domain, string apiKey)
 		{
-			this.apiKey = apiKey;
-
-			baseUrl = new Uri("https://api.mailgun.net/v2/" + domain + "/");
+			DomainBaseUrl = new Uri("https://api.mailgun.net/v2/" + domain + "/");
+			ApiKey = apiKey;
 		}
 
-		public void SendMail(MailMessage mailMessage)
+		public Uri DomainBaseUrl { get; private set; }
+
+		public string ApiKey { get; private set; }
+
+		public IEnumerable<MailgunStatEntry> GetStats(out int count)
 		{
-			var request = CreateRequest("POST");
-
-			var formParts = new List<FormPart>
-			{
-				new SimpleFormPart("from", mailMessage.From.Address),
-				new SimpleFormPart("to", string.Join(",", mailMessage.To)),
-				new SimpleFormPart("subject", mailMessage.Subject),
-				new SimpleFormPart(mailMessage.IsBodyHtml ? "html" : "text", mailMessage.Body),
-			};
-
-			if(mailMessage.CC.Any()) new SimpleFormPart("cc", string.Join(",", mailMessage.CC));
-			if (mailMessage.Bcc.Any()) new SimpleFormPart("bcc", string.Join(",", mailMessage.Bcc));
-
-			formParts.AddRange(mailMessage.Attachments.Select(attachment => new AttachmentSimpleFormPart(attachment)));
-
-			request.SetFormParts(formParts);
-
-			var response = ExecuteRequest(request);
-
-			if (response.StatusCode == HttpStatusCode.Unauthorized) throw new AuthenticationException();
-
-			if (response.StatusCode == HttpStatusCode.NotFound) throw new EntryPointNotFoundException(response.BodyAsJson().message.Value);
+			return GetStats(0, 100, MailgunEventTypes.Sent, out count);
 		}
 
-		private HttpWebResponse ExecuteRequest(WebRequest request)
+		public IEnumerable<MailgunStatEntry> GetStats(int skip, int take, MailgunEventTypes eventTypes, out int count)
 		{
-			try
-			{
-				return request.GetResponse() as HttpWebResponse;
-			}
-			catch (WebException ex)
-			{
-				return ex.Response as HttpWebResponse;
-			}
+			return new MailgunStatsQuery(this, eventTypes).Execute(skip, take, out count);
 		}
 
-		private HttpWebRequest CreateRequest(string method)
+		public IEnumerable<Route> GetRoutes(int skip, int take, out int count)
 		{
-			var request = WebRequest.Create(new Uri(baseUrl, "messages")) as HttpWebRequest;
-			request.Method = method;
+			return new MailgunRouteQuery(this).Execute(skip, take, out count);
+		}
 
-			// request.PreAuthenticate does not work as you might expect
-			request.Headers.Add("Authorization", "basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("api:{0}", apiKey))));
+		public Route CreateRoute(int priority, string description, RouteFilter expression, params RouteAction[] actions)
+		{
+			return new CreateRouteCommand(this, priority, description, expression, actions).Invoke().Route;
+		}
 
-			return request;
+		public CommandResult SendMail(MailMessage mailMessage)
+		{
+			return new SendMailCommand(this, mailMessage).Invoke();
 		}
 	}
 }
