@@ -11,5 +11,7 @@ namespace Typesafe.Mailgun
 		}
 
 		public string Message { get; private set; }
+
+		public override string ToString() { return Message; }
 	}
 }
