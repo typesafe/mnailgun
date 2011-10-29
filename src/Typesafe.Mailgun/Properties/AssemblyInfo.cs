@@ -2,15 +2,13 @@
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Typesafe.Mailgun")]
-[assembly: AssemblyDescription("A wrapper library for the Mailgun REST API.")]
+[assembly: AssemblyDescription("A simple .Net wrapper library for the Mailgun API.")]
 
 [assembly: AssemblyCompany("Typesafe")]
-[assembly: AssemblyProduct("Typesafe.Mailgun")]
+[assembly: AssemblyProduct("mnailgun")]
 [assembly: AssemblyCopyright("Copyright © Gino Heyman 2011")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("0.2.0.0")]
-[assembly: AssemblyFileVersion("0.2.0.0")]
+[assembly: AssemblyVersion("0.2.1.2127")]
+[assembly: AssemblyFileVersion("0.2.1.2127")]
