@@ -1,6 +1,13 @@
 = mnailgun Release Notes
 
-== Latest Version (0.2.0)
+== Latest Version (0.2.1)
+
+- Build script improvements (mainly versioning)
+- Fixed test for bad domaind which broke after introducing MailgunClientBuilder
+- Added support for SymbolSource
+- Added license (Apache 2.0)
+
+== Version 0.2.0
 
 Added support for Stats, Routes & Mailboxes.
 
