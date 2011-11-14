@@ -9,7 +9,7 @@ namespace Typesafe.Mailgun.Routing
 
 		public static RouteFilter MatchRecipient(string mailPattern)
 		{
-			return new RouteFilter(string.Format("match_reciptient(\"{0}\")", mailPattern));
+			return new RouteFilter(string.Format("match_recipient(\"{0}\")", mailPattern));
 		}
 
 		public static RouteFilter MatchHeader(string header, string pattern)
