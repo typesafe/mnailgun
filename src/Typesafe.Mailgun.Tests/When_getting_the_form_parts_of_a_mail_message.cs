@@ -18,7 +18,7 @@ namespace Typesafe.Mailgun.Tests
 					new MailAddress("gino.heyman@gmail.com", "Gino Heyman")) 
 					{ Body = "this is a test message from mailgun.", Subject = "Hello from mailgun" });
 
-			Assert.IsNotNull("Gino Heyman <gino@samples.mailgun.org>", ((SimpleFormPart)cmd.CreateFormParts().First(p => p is SimpleFormPart)).Value);
+			Assert.AreEqual("\"Gino Heyman\" <gino@samples.mailgun.org>", ((SimpleFormPart)cmd.CreateFormParts().First(p => p is SimpleFormPart)).Value);
 		}
 	}
 }

@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("0.2.1.2127")]
-[assembly: AssemblyFileVersion("0.2.1.2127")]
+[assembly: AssemblyVersion("0.2.2.2132")]
+[assembly: AssemblyFileVersion("0.2.2.2132")]
 
 [assembly: InternalsVisibleTo("Typesafe.Mailgun.Tests")]

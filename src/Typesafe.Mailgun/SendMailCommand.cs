@@ -18,7 +18,7 @@ namespace Typesafe.Mailgun
 		{
 			var formParts = new List<FormPart>
 			{
-				new SimpleFormPart("from", mailMessage.From.Address),
+				new SimpleFormPart("from", mailMessage.From.ToString()),
 				new SimpleFormPart("to", string.Join(",", mailMessage.To)),
 				new SimpleFormPart("subject", mailMessage.Subject),
 				new SimpleFormPart(mailMessage.IsBodyHtml ? "html" : "text", mailMessage.Body),
