@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Typesafe.Mailgun")]
@@ -12,3 +13,5 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("0.2.1.2127")]
 [assembly: AssemblyFileVersion("0.2.1.2127")]
+
+[assembly: InternalsVisibleTo("Typesafe.Mailgun.Tests")]

@@ -58,6 +58,7 @@
     <Compile Include="Routing\When_creating_a_route_for_another_domain.cs" />
     <Compile Include="Routing\When_creating_a_route_for_a_web_hook.cs" />
     <Compile Include="Routing\When_deleting_a_route.cs" />
+    <Compile Include="When_getting_the_form_parts_of_a_mail_message.cs" />
     <Compile Include="When_getting_the_latest_stats.cs" />
     <Compile Include="Routing\When_getting_the_routes.cs" />
     <Compile Include="When_sending_an_email_message.cs" />

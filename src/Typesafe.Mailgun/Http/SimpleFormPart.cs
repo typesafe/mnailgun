@@ -10,9 +10,9 @@ namespace Typesafe.Mailgun.Http
 			Value = value;
 		}
 
-		private string Name { get; set; }
+		public string Name { get; private set; }
 
-		private string Value { get; set; }
+		public string Value { get; private set; }
 
 		public override void WriteTo(StreamWriter writer, string boundary)
 		{

@@ -14,7 +14,7 @@ namespace Typesafe.Mailgun
 			this.mailMessage = mailMessage;
 		}
 
-		protected override IEnumerable<FormPart> CreateFormParts()
+		protected internal override IEnumerable<FormPart> CreateFormParts()
 		{
 			var formParts = new List<FormPart>
 			{

@@ -1,6 +1,12 @@
 = mnailgun Release Notes
 
-== Latest Version (0.2.1)
+
+== Latest Version (0.2.2)
+
+- Fixed issue 2 (display names are ignored)
+- updated README to include nuget info
+
+== Version 0.2.1
 
 - Build script improvements (mainly versioning)
 - Fixed test for bad domaind which broke after introducing MailgunClientBuilder

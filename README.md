@@ -7,16 +7,13 @@ that allows you to send messages, register domains, create mailboxes, manage rou
 Installing mnailgun
 -------------------
 
-For now, get the code and build it (if you've got ruby/IronRuby installed it's as simple
-as `> rake` on the command line.
-
-No nuget package yet. Shouldn't take to long.
+Install the Nuget package mnailgun.
 
 Getting started
 ---------------
 
 The mailgun API is exposed through the `Typesafe.MailgunClient`. All supported operations are 
-exposed thorugh this client.
+exposed through this client.
 
 	var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
 	

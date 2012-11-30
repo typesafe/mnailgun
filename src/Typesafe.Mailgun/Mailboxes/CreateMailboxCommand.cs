@@ -15,7 +15,7 @@ namespace Typesafe.Mailgun.Mailboxes
 			this.password = password;
 		}
 
-		protected override IEnumerable<FormPart> CreateFormParts()
+		protected internal override IEnumerable<FormPart> CreateFormParts()
 		{
 			return new List<FormPart> { new SimpleFormPart("mailbox", account), new SimpleFormPart("password", password) };
 		}

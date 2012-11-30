@@ -43,7 +43,7 @@ namespace Typesafe.Mailgun
 			if (response.StatusCode >= HttpStatusCode.BadRequest) throw new InvalidOperationException(response.Message);
 		}
 
-		protected virtual IEnumerable<FormPart> CreateFormParts()
+		protected internal virtual IEnumerable<FormPart> CreateFormParts()
 		{
 			return Enumerable.Empty<FormPart>();
 		}
