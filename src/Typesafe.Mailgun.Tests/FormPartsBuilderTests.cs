@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
-using System.Text;
+using System.Net.Mime;
 using NUnit.Framework;
 using Typesafe.Mailgun.Http;
 
@@ -88,10 +88,38 @@ namespace Typesafe.Mailgun.Tests
             result.AssertContains(attachment);
         }
 
-        // TODO (RC): AlternateView for HTML Sets HTML Param
-        // TODO (RC): AlternateView for Text Sets Text Param
-        // TODO (RC): Body Overrides (IsHtml False)
-        // TODO (RC): Body Overrides (IsHtml True)
+        [Test]
+        public void Build_MessageHasPlainTextAlternateView_AddsTextPart()
+        {
+            var view = AlternateView.CreateAlternateViewFromString("plaintext", new ContentType("text/plain"));
+            var message = BuildMessage(x => x.AlternateViews.Add(view));
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("text", "plaintext");
+        }
+        
+        [Test]
+        public void Build_MessageHasPlainTextAlternateViewAndBodyIsText_BodyWins()
+        {
+            var view = AlternateView.CreateAlternateViewFromString("plaintext", new ContentType("text/plain"));
+            var message = BuildMessage(x =>
+                                           {
+                                               x.AlternateViews.Add(view);
+                                               x.Body = "success";
+                                               x.IsBodyHtml = false;
+                                           });
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("text", "success");
+            result.AssertDoesntContain("text", "plaintext");
+        }
+        
+        [Test]
+        public void Build_MessageHasHtmlTextAlternateView_AddsHtmlPart()
+        {
+            var view = AlternateView.CreateAlternateViewFromString("<h1>html</h1>", new ContentType("text/html"));
+            var message = BuildMessage(x => x.AlternateViews.Add(view));
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("html", "<h1>html</h1>");
+        }
 
         /// <summary>
         /// Factory method for spinning up a MailMessage to play with.
@@ -120,8 +148,19 @@ namespace Typesafe.Mailgun.Tests
 
             if (match == null || !match.Any())
                 Assert.Fail("Expected FormParts list to contain '{0}' with value '{1}', but no matching name/value pair was found.", name, value);
+        }
+        
+        internal static void AssertDoesntContain(this List<FormPart> parts, string name, string value)
+        {
+            if (parts == null || !parts.Any())
+                return;
 
-            Assert.Pass("Found FormPart item in list named '{0}' with value '{1}'.", name, value);
+            var match = parts.OfType<SimpleFormPart>().Where(x => x.Name == name && x.Value == value);
+
+            if (match == null || !match.Any())
+                return;
+
+            Assert.Fail("Found FormPart item in list named '{0}' with value '{1}'.", name, value);
         }
         
         internal static void AssertContains(this List<FormPart> parts, Attachment attachment)
@@ -133,8 +172,6 @@ namespace Typesafe.Mailgun.Tests
 
             if (match == null || !match.Any())
                 Assert.Fail("Expected FormParts list to contain attachment '{0}', but no matching item was found.", attachment.Name);
-
-            Assert.Pass("Found FormPart attachment item in list named '{0}'.", attachment.Name);
         }
     }
 }
