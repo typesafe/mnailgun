@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormPartsBuilderTests.cs" />
     <Compile Include="Mailboxes\When_creating_a_mailbox.cs" />
     <Compile Include="Mailboxes\When_deleting_a_mailbox.cs" />
     <Compile Include="Mailboxes\When_querying_the_mailboxes.cs" />
