@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>mnailgun</id>
-		<version>0.3.0</version>
+		<version>0.4.0</version>
 		<authors>Gino Heyman</authors>
 		<owners>Gino Heyman</owners>
 		<licenseUrl>https://raw.github.com/typesafe/mnailgun/master/license.txt</licenseUrl>
