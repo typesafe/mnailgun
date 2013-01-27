@@ -2,60 +2,70 @@
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Net.Mime;
 using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
 {
-    public class FormPartsBuilder
-    {
-        public static List<FormPart> Build(MailMessage message)
-        {
-            if (message == null)
-                return new List<FormPart>();
+	public static class FormPartsBuilder
+	{
+		public static List<FormPart> Build(MailMessage message)
+		{
+			if (message == null)
+				return new List<FormPart>();
 
-            var result = new List<FormPart>
-                {
-                    new SimpleFormPart("from", message.From.ToString()),
-                    new SimpleFormPart("to",string.Join(", ", message.To)),
-                    new SimpleFormPart("subject", message.Subject)
-                };
+			var result = new List<FormPart>
+			{
+				new SimpleFormPart("from", message.From.ToString()),
+				new SimpleFormPart("to",string.Join(", ", message.To)),
+				new SimpleFormPart("subject", message.Subject)
+			};
 
-            if (message.CC.Any())
-                result.Add(new SimpleFormPart("cc",string.Join(", ", message.CC)));
-            
-            if (message.Bcc.Any())
-                result.Add(new SimpleFormPart("bcc",string.Join(", ", message.Bcc)));
+			if (message.CC.Any())
+				result.Add(new SimpleFormPart("cc", string.Join(", ", message.CC)));
 
-            var htmlPart = PartForTextContent(message, html: true);
-            if (htmlPart != null) result.Add(htmlPart);
-            
-            var textPart = PartForTextContent(message, html: false);
-            if (textPart != null) result.Add(textPart);
-            
-            result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
+			if (message.Bcc.Any())
+				result.Add(new SimpleFormPart("bcc", string.Join(", ", message.Bcc)));
 
-            return result;
-        }
+			result.AddRange(message.GetBodyParts());
 
-        private static FormPart PartForTextContent(MailMessage message, bool html)
-        {
-            var contentType = html ? "text/html" : "text/plain";
-            var partName = html ? "html" : "text";
-            
-            if (!string.IsNullOrWhiteSpace(message.Body))
-            {
-                return new SimpleFormPart(partName, message.Body);
-            }
+			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
-            // Check to See if AlternateView Specified for Content Type
-            var view = message.AlternateViews.FirstOrDefault(x => x.ContentType.MediaType == contentType);
-            if (view != null)
-            {
-                var content = new StreamReader(view.ContentStream).ReadToEnd();
-                return new SimpleFormPart(partName, content);
-            }
+			return result;
+		}
 
-            return null;
-        }
-    }
+		private static IEnumerable<FormPart> GetBodyParts(this MailMessage message)
+		{
+			if (!string.IsNullOrWhiteSpace(message.Body))
+			{
+				yield return new SimpleFormPart(message.IsBodyHtml ? "html" : "text", message.Body);
+
+				var alternateContentType = message.IsBodyHtml ? MediaTypeNames.Text.Plain : MediaTypeNames.Text.Html;
+				var alt = message.GetAlternatePart(alternateContentType);
+
+				if (alt != null) yield return alt;
+			}
+			else
+			{
+				var alt = message.GetAlternatePart(MediaTypeNames.Text.Plain);
+				if (alt != null) yield return alt;
+
+				alt = message.GetAlternatePart(MediaTypeNames.Text.Html);
+				if (alt != null) yield return alt;
+			}
+		}
+
+		private static FormPart GetAlternatePart(this MailMessage message, string contentType)
+		{
+			var alt = message.AlternateViews.FirstOrDefault(v => v.ContentType.MediaType == contentType);
+
+			if (alt != null)
+			{
+				using (var sr = new StreamReader(alt.ContentStream))
+					return new SimpleFormPart(contentType == MediaTypeNames.Text.Plain ? "text" : "html", sr.ReadToEnd());
+			}
+
+			return null;
+		}
+	}
 }

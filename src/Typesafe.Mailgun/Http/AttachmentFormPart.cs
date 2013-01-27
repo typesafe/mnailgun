@@ -9,12 +9,14 @@ namespace Typesafe.Mailgun.Http
 	/// </summary>
 	public class AttachmentFormPart : FormPart
 	{
-		public readonly Attachment Attachment;
+		private readonly Attachment attachment;
 
 		public AttachmentFormPart(Attachment attachment)
 		{
-			this.Attachment = attachment;
+			this.attachment = attachment;
 		}
+
+		public Attachment Attachment { get { return attachment; } }
 
 		public override void WriteTo(StreamWriter writer, string boundary)
 		{

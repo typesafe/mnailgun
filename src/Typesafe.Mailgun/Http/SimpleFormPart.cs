@@ -20,5 +20,10 @@ namespace Typesafe.Mailgun.Http
 			writer.Write(Value);
 			writer.Write("\r\n");
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}: {1}", Name, Value);
+		}
 	}
 }
