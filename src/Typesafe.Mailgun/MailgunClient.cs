@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Mail;
-using Typesafe.Mailgun.Extensions.Json;
 using Typesafe.Mailgun.Mailboxes;
 using Typesafe.Mailgun.Routing;
 using Typesafe.Mailgun.Statistics;
 
 namespace Typesafe.Mailgun
 {
-    /// <summary>
+	/// <summary>
 	/// Provides access to the Mailgun REST API.
 	/// </summary>
 	public class MailgunClient : IMailgunAccountInfo, IMailgunClient
-    {
+	{
 		/// <summary>
 		/// Initializes a new client for the specified domain and api key.
 		/// </summary>
@@ -26,12 +25,10 @@ namespace Typesafe.Mailgun
 
 		public string ApiKey { get; private set; }
 
-
 		public CommandResult SendMail(MailMessage mailMessage)
 		{
 			return new SendMailCommand(this, mailMessage).Invoke();
 		}
-
 
 		public IEnumerable<Route> GetRoutes(int skip, int take, out int count)
 		{
