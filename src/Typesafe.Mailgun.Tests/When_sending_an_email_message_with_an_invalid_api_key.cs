@@ -1,4 +1,3 @@
-using System.Net.Mail;
 using System.Security.Authentication;
 using NUnit.Framework;
 

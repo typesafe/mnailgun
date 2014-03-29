@@ -71,6 +71,7 @@
     <Compile Include="Routing\CreateRouteCommandResult.cs" />
     <Compile Include="Routing\MailgunRouteQuery.cs" />
     <Compile Include="SendMailCommand.cs" />
+    <Compile Include="SendMailCommandResult.cs" />
     <Compile Include="Statistics\MailgunStatEntry.cs" />
     <Compile Include="MailgunEventTypes.cs" />
     <Compile Include="Statistics\MailgunStatsQuery.cs" />

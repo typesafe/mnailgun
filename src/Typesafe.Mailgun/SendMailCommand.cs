@@ -5,7 +5,7 @@ using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
 {
-    internal class SendMailCommand : MailgunCommand
+    internal class SendMailCommand : MailgunCommand<SendMailCommandResult>
     {
         private readonly MailMessage mailMessage;
 
@@ -19,5 +19,10 @@ namespace Typesafe.Mailgun
         {
             return FormPartsBuilder.Build(mailMessage);
         }
+
+	    public override SendMailCommandResult TranslateResponse(MailgunHttpResponse response)
+	    {
+		    return new SendMailCommandResult(response.Body.id.ToString(), response.Message);
+	    }
     }
 }

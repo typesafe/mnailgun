@@ -25,7 +25,7 @@ namespace Typesafe.Mailgun
 
 		public string ApiKey { get; private set; }
 
-		public CommandResult SendMail(MailMessage mailMessage)
+		public SendMailCommandResult SendMail(MailMessage mailMessage)
 		{
 			return new SendMailCommand(this, mailMessage).Invoke();
 		}

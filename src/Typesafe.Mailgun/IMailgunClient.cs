@@ -16,7 +16,7 @@ namespace Typesafe.Mailgun
 		/// </summary>
 		/// <param name="mailMessage"></param>
 		/// <returns></returns>
-		CommandResult SendMail(MailMessage mailMessage);
+		SendMailCommandResult SendMail(MailMessage mailMessage);
 
 		IEnumerable<Route> GetRoutes(int skip, int take, out int count);
 
