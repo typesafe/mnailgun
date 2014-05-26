@@ -56,6 +56,15 @@ namespace Typesafe.Mailgun.Tests
 		}
 
 		[Test]
+		public void Build_ReplyToSpecified_AddsReplyToPart()
+		{
+			var replyTo = new MailAddress("test@success.com", "Test Passed");
+			var message = BuildMessage(x => { x.ReplyToList.Clear(); x.ReplyToList.Add(replyTo); });
+			var result = FormPartsBuilder.Build(message);
+			result.AssertContains("h:Reply-To", replyTo.ToString());
+		}
+
+		[Test]
 		public void Build_SubjectSpecified_AddsSubjectPart()
 		{
 			var message = BuildMessage(x => x.Subject = "Test Passed");
