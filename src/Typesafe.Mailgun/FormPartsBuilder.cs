@@ -27,6 +27,9 @@ namespace Typesafe.Mailgun
 			if (message.Bcc.Any())
 				result.Add(new SimpleFormPart("bcc", string.Join(", ", message.Bcc)));
 
+			if(message.ReplyToList.Any())
+				result.Add(new SimpleFormPart("h:Reply-To", string.Join(", ", message.ReplyToList)));
+
 			result.AddRange(message.GetBodyParts());
 
 			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
