@@ -25,7 +25,7 @@ Sending a mail message
 The `SendMail` method accepts a regular .Net `System.Net.MailMessage` instance. From, To, Cc, Bcc, 
 Body text, attachments are all translated to a mailgun message.
 
-	client.SendMail(new System.Net.MailMessage("gino@samples.mailgun.org", "gino.heyman@gmail.com") 
+	client.SendMail(new System.Net.Mail.MailMessage("gino@samples.mailgun.org", "gino.heyman@gmail.com") 
 	{
 		Subject = "Hello from mailgun",
 		Body = "this is a test message from mailgun."
