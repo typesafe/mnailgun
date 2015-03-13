@@ -30,6 +30,11 @@ namespace Typesafe.Mailgun
 			return new SendMailCommand(this, mailMessage).Invoke();
 		}
 
+		public SendMailCommandResult SendMail(MailMessage mailMessage, string recipientVariables)
+		{
+			return new SendMailCommand(this, mailMessage, recipientVariables).Invoke();
+		}
+
 		public IEnumerable<Route> GetRoutes(int skip, int take, out int count)
 		{
 			return new MailgunRouteQuery(this).Execute(skip, take, out count);
