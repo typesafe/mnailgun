@@ -11,6 +11,11 @@ namespace Typesafe.Mailgun
 	{
 		public static List<FormPart> Build(MailMessage message)
 		{
+			return Build(message, string.Empty);
+		}
+
+		public static List<FormPart> Build(MailMessage message, string recipientVariables)
+		{
 			if (message == null)
 				return new List<FormPart>();
 
@@ -18,7 +23,8 @@ namespace Typesafe.Mailgun
 			{
 				new SimpleFormPart("from", message.From.ToString()),
 				new SimpleFormPart("to",string.Join(", ", message.To)),
-				new SimpleFormPart("subject", message.Subject)
+				new SimpleFormPart("subject", message.Subject),
+				new SimpleFormPart("recipient-variables", recipientVariables),
 			};
 
 			if (message.CC.Any())
