@@ -31,7 +31,7 @@ namespace Typesafe.Mailgun
 			return new SendMailCommand(this, mailMessage).Invoke();
 		}
 
-		public SendMailCommandResult SendMail(MailMessage mailMessage, IDictionary<string, IDictionary<string, object>> recipientVariables)
+		public SendMailCommandResult SendBatchMail(MailMessage mailMessage, IDictionary<string, IDictionary<string, object>> recipientVariables)
 		{
 			return new SendMailCommand(this, mailMessage, JsonConvert.SerializeObject(recipientVariables)).Invoke();
 		}
