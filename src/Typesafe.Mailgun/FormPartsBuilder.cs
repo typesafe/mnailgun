@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
+using Newtonsoft.Json;
 using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
@@ -11,6 +12,11 @@ namespace Typesafe.Mailgun
 	{
 		public static List<FormPart> Build(MailMessage message)
 		{
+			return Build(message, null);
+		}
+
+		public static List<FormPart> Build(MailMessage message, IDictionary<string, IDictionary<string, object>> recipientVariables)
+		{
 			if (message == null)
 				return new List<FormPart>();
 
@@ -18,8 +24,13 @@ namespace Typesafe.Mailgun
 			{
 				new SimpleFormPart("from", message.From.ToString()),
 				new SimpleFormPart("to",string.Join(", ", message.To)),
-				new SimpleFormPart("subject", message.Subject)
+				new SimpleFormPart("subject", message.Subject),
 			};
+
+			if (recipientVariables != null)
+			{
+				result.Add(new SimpleFormPart("recipient-variables", JsonConvert.SerializeObject(recipientVariables)));
+			}
 
 			if (message.CC.Any())
 				result.Add(new SimpleFormPart("cc", string.Join(", ", message.CC)));
