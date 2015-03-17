@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Mail;
+using Newtonsoft.Json;
 using Typesafe.Mailgun.Mailboxes;
 using Typesafe.Mailgun.Routing;
 using Typesafe.Mailgun.Statistics;
@@ -30,9 +31,9 @@ namespace Typesafe.Mailgun
 			return new SendMailCommand(this, mailMessage).Invoke();
 		}
 
-		public SendMailCommandResult SendMail(MailMessage mailMessage, string recipientVariables)
+		public SendMailCommandResult SendMail(MailMessage mailMessage, IDictionary<string, IDictionary<string, object>> recipientVariables)
 		{
-			return new SendMailCommand(this, mailMessage, recipientVariables).Invoke();
+			return new SendMailCommand(this, mailMessage, JsonConvert.SerializeObject(recipientVariables)).Invoke();
 		}
 
 		public IEnumerable<Route> GetRoutes(int skip, int take, out int count)
