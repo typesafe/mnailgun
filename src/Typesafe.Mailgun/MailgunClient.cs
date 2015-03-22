@@ -30,7 +30,12 @@ namespace Typesafe.Mailgun
 			return new SendMailCommand(this, mailMessage).Invoke();
 		}
 
-		public SendMailCommandResult SendMail(MailMessage mailMessage, string recipientVariables)
+		public SendMailCommandResult SendBatchMail(MailMessage mailMessage)
+		{
+			return SendBatchMail(mailMessage, new Dictionary<string, IDictionary<string, object>>());
+		}
+
+		public SendMailCommandResult SendBatchMail(MailMessage mailMessage, IDictionary<string, IDictionary<string, object>> recipientVariables)
 		{
 			return new SendMailCommand(this, mailMessage, recipientVariables).Invoke();
 		}

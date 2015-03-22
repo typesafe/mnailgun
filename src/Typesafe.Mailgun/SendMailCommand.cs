@@ -8,7 +8,7 @@ namespace Typesafe.Mailgun
     internal class SendMailCommand : MailgunCommand<SendMailCommandResult>
     {
         private readonly MailMessage mailMessage;
-		private readonly string _recipientVariables = string.Empty;
+		private readonly IDictionary<string, IDictionary<string, object>> _recipientVariables;
 
         public SendMailCommand(IMailgunAccountInfo accountInfo, MailMessage mailMessage)
             : base(accountInfo, "messages")
@@ -16,7 +16,7 @@ namespace Typesafe.Mailgun
             this.mailMessage = mailMessage;
         }
 
-		public SendMailCommand(IMailgunAccountInfo accountInfo, MailMessage mailMessage, string recipientVariables)
+		public SendMailCommand(IMailgunAccountInfo accountInfo, MailMessage mailMessage, IDictionary<string, IDictionary<string, object>> recipientVariables)
 			: base(accountInfo, "messages")
 		{
 			this.mailMessage = mailMessage;
