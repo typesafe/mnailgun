@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun.Tests", "Typesafe.Mailgun.Tests\Typesafe.Mailgun.Tests.csproj", "{7FA60929-7721-47DC-B9DC-39643E3B9D36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun", "Typesafe.Mailgun\Typesafe.Mailgun.csproj", "{38A5D96D-36BC-4F37-9477-CD18FB32563B}"
@@ -11,6 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		nuget.config = nuget.config
 		..\rakefile.rb = ..\rakefile.rb
 		..\VERSION.txt = ..\VERSION.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{07C94DD1-430E-4DF6-95CC-80CAEC099745}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
 Global
