@@ -9,7 +9,7 @@ namespace Typesafe.Mailgun.Tests
 		[Test]
 		public void an_authorization_exception_should_be_thrown()
 		{
-			var client = new MailgunClient("samples.mailgun.org", "key-aaaaaaaaaaaaaa");
+			var client = new MailgunClient("samples.mailgun.org", "key-aaaaaaaaaaaaaa", 3);
 
 			Assert.Throws<AuthenticationException>(() => client.SendMail(MailMessageBuilder.CreateMailWithoutAttachments()));
 		}

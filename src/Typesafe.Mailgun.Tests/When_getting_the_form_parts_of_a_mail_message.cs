@@ -12,7 +12,7 @@ namespace Typesafe.Mailgun.Tests
 		public void the_from_part_should_include_display_name()
 		{
 			var cmd = new SendMailCommand(
-				new MailgunClient("domain", "api"), 
+				new MailgunClient("domain", "api", 3), 
 				new MailMessage(
 					new MailAddress("gino@samples.mailgun.org", "Gino Heyman"),
 					new MailAddress("gino.heyman@gmail.com", "Gino Heyman")) 

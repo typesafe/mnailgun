@@ -8,7 +8,7 @@ namespace Typesafe.Mailgun.Tests.Mailboxes
 		[Test]
 		public void the_new_mailbox_should_be_deleted()
 		{
-			var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
+			var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0", 3);
 
 			var result = client.DeleteMailbox("gino.heyman");
 
