@@ -8,7 +8,7 @@ load "VERSION.txt"
 now = Time.now
 ASM_VERSION = "#{BUILD_VERSION}.#{now.year + now.month + now.day + now.hour + now.min + now.sec}"
 
-desc 'builds and packages'
+desc 'builds and tests'
 task :default => [:build, :test]
 
 desc 'builds mnailgun'
