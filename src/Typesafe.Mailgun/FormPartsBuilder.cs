@@ -15,7 +15,7 @@ namespace Typesafe.Mailgun
 			return Build(message, null);
 		}
 
-		public static List<FormPart> Build(MailMessage message, IDictionary<string, IDictionary<string, object>> recipientVariables)
+        public static List<FormPart> Build(MailMessage message, IDictionary<string, IDictionary<string, object>> recipientVariables, IDictionary<string, object> customVariables = null)
 		{
 			if (message == null)
 				return new List<FormPart>();
@@ -31,6 +31,13 @@ namespace Typesafe.Mailgun
 			{
 				result.Add(new SimpleFormPart("recipient-variables", JsonConvert.SerializeObject(recipientVariables)));
 			}
+            if (customVariables != null)
+            {
+                foreach (var item in customVariables)
+                {
+                    result.Add(new SimpleFormPart("v:" + item.Key, JsonConvert.SerializeObject(item.Value)));
+                }
+            }
 
 			if (message.CC.Any())
 				result.Add(new SimpleFormPart("cc", string.Join(", ", message.CC)));
@@ -66,6 +73,8 @@ namespace Typesafe.Mailgun
 
 				alt = message.GetAlternatePart(MediaTypeNames.Text.Html);
 				if (alt != null) yield return alt;
+
+                yield return new SimpleFormPart("html", " ");
 			}
 		}
 
