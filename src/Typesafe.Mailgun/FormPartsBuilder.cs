@@ -41,7 +41,11 @@ namespace Typesafe.Mailgun
 			if(message.ReplyToList.Any())
 				result.Add(new SimpleFormPart("h:Reply-To", string.Join(", ", message.ReplyToList)));
 
-			result.AddRange(message.GetBodyParts());
+            		var mailgunMessageHeader = "X-Mailgun-Variables";
+            		if (message.Headers.AllKeys.Contains(mailgunMessageHeader))
+                		result.Add(new SimpleFormPart("v:my-custom-data", message.Headers[mailgunMessageHeader]));
+
+            		result.AddRange(message.GetBodyParts());
 
 			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
