@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeleteCommand.cs" />
+    <Compile Include="Extensions\MailMessageExtensions.cs" />
     <Compile Include="FormPartsBuilder.cs" />
     <Compile Include="Http\MailgunHttpResponse.cs" />
     <Compile Include="IMailgunClient.cs" />
