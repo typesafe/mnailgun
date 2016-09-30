@@ -9,6 +9,8 @@ using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun.Tests
 {
+	using Typesafe.Mailgun.Extensions;
+
 	[TestFixture]
 	public class FormPartsBuilderTests
 	{
@@ -70,6 +72,15 @@ namespace Typesafe.Mailgun.Tests
 			var message = BuildMessage(x => x.Subject = "Test Passed");
 			var result = FormPartsBuilder.Build(message);
 			result.AssertContains("subject", "Test Passed");
+		}
+
+		[Test]
+		public void Build_VariablesSpecified_AddsVariablesPart()
+		{
+			var message = BuildMessage(x => x.AddVariable("my_message_id", "123"));
+			var result = FormPartsBuilder.Build(message);
+
+			result.AssertContains("v:my_message_id", "123");
 		}
 
 		[Test]
