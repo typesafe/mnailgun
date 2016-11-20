@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Net.Mime;
 using NUnit.Framework;
+using Typesafe.Mailgun.Extensions;
 using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun.Tests
@@ -88,6 +89,15 @@ namespace Typesafe.Mailgun.Tests
 			var result = FormPartsBuilder.Build(message);
 			result.AssertContains("html", "<h1>Test Passed</h1>");
 			result.AssertDoesntContain("text");
+		}
+
+
+		[Test]
+		public void Build_TagsSpecified_AddsTagPart()
+		{
+			var message = BuildMessage(x => { x.AddTag("TagExample"); });
+			var result = FormPartsBuilder.Build(message);
+			result.AssertContains("o:tag", "TagExample");
 		}
 
 		[Test]

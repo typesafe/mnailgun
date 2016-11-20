@@ -47,6 +47,21 @@ namespace Typesafe.Mailgun
 
             		result.AddRange(message.GetBodyParts());
 
+			// Check for the existense of any Mailgun Tag headers
+			if (message.Headers.AllKeys.Contains("X-Mailgun-Tag"))
+			{
+				// Grab the Mailgun tag header values
+				var tagHeaders = message.Headers.GetValues("X-Mailgun-Tag");
+				if (tagHeaders != null)
+				{
+					// Iterate over the collection and add each tag header to the result
+					foreach (var tag in tagHeaders)
+					{
+						result.Add(new SimpleFormPart("o:tag", tag));
+					}
+				}
+			}
+
 			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
 			return result;
