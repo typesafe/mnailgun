@@ -16,5 +16,10 @@ namespace Typesafe.Mailgun.Extensions
 		{
 			mailMessage.Headers.Add("X-Mailgun-Tag", tag);
 		}
+
+		public static void AddVariable(this MailMessage mailMessage, string name, string value)
+		{
+			mailMessage.Headers.Add("X-Mailgun-Variables", string.Format("{{\"{0}\": \"{1}\"}}", name, value));
+		}
 	}
 }

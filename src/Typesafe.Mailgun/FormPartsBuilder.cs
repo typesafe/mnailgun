@@ -8,6 +8,8 @@ using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
 {
+	using Newtonsoft.Json.Linq;
+
 	public static class FormPartsBuilder
 	{
 		public static List<FormPart> Build(MailMessage message)
@@ -41,11 +43,26 @@ namespace Typesafe.Mailgun
 			if(message.ReplyToList.Any())
 				result.Add(new SimpleFormPart("h:Reply-To", string.Join(", ", message.ReplyToList)));
 
-            		var mailgunMessageHeader = "X-Mailgun-Variables";
-            		if (message.Headers.AllKeys.Contains(mailgunMessageHeader))
-                		result.Add(new SimpleFormPart("v:my-custom-data", message.Headers[mailgunMessageHeader]));
+			// Check for the existence of any Mailgun-Variables headers
+			if (message.Headers.AllKeys.Contains("X-Mailgun-Variables"))
+			{
+				// Grab the Mailgun variables header values
+				var variableHeaders = message.Headers.GetValues("X-Mailgun-Variables");
+				if (variableHeaders != null)
+				{
+					// Iterate over the collection and add each tag header to the result
+					foreach (var variable in variableHeaders)
+					{
+						JObject customVar = JObject.Parse(variable);
+						foreach (var item in customVar)
+						{
+							result.Add(new SimpleFormPart(string.Format("v:{0}", item.Key), item.Value.ToString()));
+						}
+					}
+				}
+			}
 
-            		result.AddRange(message.GetBodyParts());
+			result.AddRange(message.GetBodyParts());
 
 			// Check for the existense of any Mailgun Tag headers
 			if (message.Headers.AllKeys.Contains("X-Mailgun-Tag"))
