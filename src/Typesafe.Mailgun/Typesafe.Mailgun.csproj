@@ -50,11 +50,6 @@
     <Compile Include="FormPartsBuilder.cs" />
     <Compile Include="Http\MailgunHttpResponse.cs" />
     <Compile Include="IMailgunClient.cs" />
-    <Compile Include="Mailboxes\CreateMailboxCommand.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Mailboxes\Mailbox.cs" />
-    <Compile Include="Mailboxes\MailgunMailboxQuery.cs" />
     <Compile Include="MailgunCommand.cs" />
     <Compile Include="CommandResult.cs" />
     <Compile Include="Extensions\Json\ConversionExtensions.cs" />

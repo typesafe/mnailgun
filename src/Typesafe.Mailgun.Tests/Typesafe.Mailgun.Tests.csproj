@@ -50,9 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormPartsBuilderTests.cs" />
-    <Compile Include="Mailboxes\When_creating_a_mailbox.cs" />
-    <Compile Include="Mailboxes\When_deleting_a_mailbox.cs" />
-    <Compile Include="Mailboxes\When_querying_the_mailboxes.cs" />
     <Compile Include="MailgunClientBuilder.cs" />
     <Compile Include="MailMessageBuilder.cs" />
     <Compile Include="Routing\When_creating_a_route.cs" />
