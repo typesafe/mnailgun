@@ -61,6 +61,7 @@
     <Compile Include="MailgunClient.cs" />
     <Compile Include="Http\MailgunHttpRequest.cs" />
     <Compile Include="MailgunCommand`1.cs" />
+    <Compile Include="MailgunMessage.cs" />
     <Compile Include="MailgunQuery.cs" />
     <Compile Include="MailgunResource.cs" />
     <Compile Include="Routing\CreateRouteCommand.cs" />
