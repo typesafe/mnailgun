@@ -5,43 +5,104 @@ using System.Net.Mail;
 using System.Net.Mime;
 using Newtonsoft.Json;
 using Typesafe.Mailgun.Http;
+using System;
+using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace Typesafe.Mailgun
 {
 	using Newtonsoft.Json.Linq;
 
-	public static class FormPartsBuilder
-	{
-		public static List<FormPart> Build(MailMessage message)
-		{
-			return Build(message, null);
-		}
+    public static class FormPartsBuilder
+    {
+        public static List<FormPart> Build(MailMessage message)
+        {
+            return Build(message, null);
+        }
 
-		public static List<FormPart> Build(MailMessage message, IDictionary<string, IDictionary<string, object>> recipientVariables)
-		{
-			if (message == null)
-				return new List<FormPart>();
+        private static void AddMailgunFields(MailgunMessage message, List<FormPart> parts)
+        {
+            var mgProps = message.GetType()
+                .GetProperties()
+                .Where(p => Attribute.IsDefined(p, typeof(MailgunFieldAttribute)));
 
-			var result = new List<FormPart>
-			{
-				new SimpleFormPart("from", message.From.ToString()),
-				new SimpleFormPart("to",string.Join(", ", message.To)),
-				new SimpleFormPart("subject", message.Subject),
-			};
+            foreach (var prop in mgProps)
+            {
+                var propType = prop.PropertyType;
+                var att = (MailgunFieldAttribute)Attribute.GetCustomAttribute(prop, typeof(MailgunFieldAttribute));
+                var prefix = att.Prefix;
+                var varName = att.Name ?? prop.Name.ToLower();
 
-			if (recipientVariables != null)
-			{
-				result.Add(new SimpleFormPart("recipient-variables", JsonConvert.SerializeObject(recipientVariables)));
-			}
+                if (propType == typeof(string))
+                {
+                    string val = (string)prop.GetValue(message, null);
+                    if (!String.IsNullOrWhiteSpace(val))
+                        AddParameter(parts, prefix, varName, val);
+                }
+                else if (propType == typeof(bool?))
+                {
+                    var val = (bool?)prop.GetValue(message, null);
+                    if (val.HasValue)
+                    {
+                        var boolAtt = (MailgunBoolValuesAttribute)Attribute.GetCustomAttribute(prop, typeof(MailgunBoolValuesAttribute));
+                        AddParameter(parts, prefix, varName, val.Value ? boolAtt.True : boolAtt.False);
+                    }
+                }
+                else if (propType == typeof(DateTime?))
+                {
+                    var val = (DateTime?)prop.GetValue(message, null);
+                    if (val.HasValue)
+                        AddParameter(parts, prefix, varName, val.Value.ToString("R"));
+                }
+                else if (typeof(IDictionary).IsAssignableFrom(propType))
+                {
+                    foreach (DictionaryEntry entry in (IDictionary)prop.GetValue(message, null))
+                    {
+                        AddParameter(parts, prefix, entry.Key, entry.Value);
+                    }
+                }
+                else if (typeof(IEnumerable).IsAssignableFrom(propType))
+                {
+                    foreach (var obj in (IEnumerable)prop.GetValue(message, null))
+                    {
+                        AddParameter(parts, prefix, varName, obj);
+                    }
+                }                    
+            }            
+        }
 
-			if (message.CC.Any())
-				result.Add(new SimpleFormPart("cc", string.Join(", ", message.CC)));
+        private static void AddParameter(IList<FormPart> list, string prefix, object varName, object value)
+        {
+            var formPart = new SimpleFormPart(String.Format("{0}:{1}", prefix, varName), value.ToString());
+            list.Add(formPart);
+        }
 
-			if (message.Bcc.Any())
-				result.Add(new SimpleFormPart("bcc", string.Join(", ", message.Bcc)));
 
-			if(message.ReplyToList.Any())
-				result.Add(new SimpleFormPart("h:Reply-To", string.Join(", ", message.ReplyToList)));
+        public static List<FormPart> Build(MailMessage message, IDictionary<string, IDictionary<string, object>> recipientVariables)
+        {
+            if (message == null)
+                return new List<FormPart>();
+
+            var result = new List<FormPart>
+            {
+                new SimpleFormPart("from", message.From.ToString()),
+                new SimpleFormPart("to",string.Join(", ", message.To)),
+                new SimpleFormPart("subject", message.Subject),
+            };
+
+            if (recipientVariables != null)
+            {
+                result.Add(new SimpleFormPart("recipient-variables", JsonConvert.SerializeObject(recipientVariables)));
+            }
+
+            if (message.CC.Any())
+                result.Add(new SimpleFormPart("cc", string.Join(", ", message.CC)));
+
+            if (message.Bcc.Any())
+                result.Add(new SimpleFormPart("bcc", string.Join(", ", message.Bcc)));
+
+            if(message.ReplyToList.Any())
+                result.Add(new SimpleFormPart("h:Reply-To", string.Join(", ", message.ReplyToList)));
 
 			// Check for the existence of any Mailgun-Variables headers
 			if (message.Headers.AllKeys.Contains("X-Mailgun-Variables"))
@@ -62,60 +123,63 @@ namespace Typesafe.Mailgun
 				}
 			}
 
-			result.AddRange(message.GetBodyParts());
+            		result.AddRange(message.GetBodyParts());
 
-			// Check for the existense of any Mailgun Tag headers
-			if (message.Headers.AllKeys.Contains("X-Mailgun-Tag"))
-			{
-				// Grab the Mailgun tag header values
-				var tagHeaders = message.Headers.GetValues("X-Mailgun-Tag");
-				if (tagHeaders != null)
-				{
-					// Iterate over the collection and add each tag header to the result
-					foreach (var tag in tagHeaders)
-					{
-						result.Add(new SimpleFormPart("o:tag", tag));
-					}
-				}
-			}
+            // Check for the existense of any Mailgun Tag headers
+            if (message.Headers.AllKeys.Contains("X-Mailgun-Tag"))
+            {
+                // Grab the Mailgun tag header values
+                var tagHeaders = message.Headers.GetValues("X-Mailgun-Tag");
+                if (tagHeaders != null)
+                {
+                    // Iterate over the collection and add each tag header to the result
+                    foreach (var tag in tagHeaders)
+                    {
+                        result.Add(new SimpleFormPart("o:tag", tag));
+                    }
+                }
+            }
 
-			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
+            result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
-			return result;
-		}
+            if (message is MailgunMessage)
+                AddMailgunFields((MailgunMessage)message, result);
 
-		private static IEnumerable<FormPart> GetBodyParts(this MailMessage message)
-		{
-			if (!string.IsNullOrWhiteSpace(message.Body))
-			{
-				yield return new SimpleFormPart(message.IsBodyHtml ? "html" : "text", message.Body);
+            return result;
+        }
 
-				var alternateContentType = message.IsBodyHtml ? MediaTypeNames.Text.Plain : MediaTypeNames.Text.Html;
-				var alt = message.GetAlternatePart(alternateContentType);
+        private static IEnumerable<FormPart> GetBodyParts(this MailMessage message)
+        {
+            if (!string.IsNullOrWhiteSpace(message.Body))
+            {
+                yield return new SimpleFormPart(message.IsBodyHtml ? "html" : "text", message.Body);
 
-				if (alt != null) yield return alt;
-			}
-			else
-			{
-				var alt = message.GetAlternatePart(MediaTypeNames.Text.Plain);
-				if (alt != null) yield return alt;
+                var alternateContentType = message.IsBodyHtml ? MediaTypeNames.Text.Plain : MediaTypeNames.Text.Html;
+                var alt = message.GetAlternatePart(alternateContentType);
 
-				alt = message.GetAlternatePart(MediaTypeNames.Text.Html);
-				if (alt != null) yield return alt;
-			}
-		}
+                if (alt != null) yield return alt;
+            }
+            else
+            {
+                var alt = message.GetAlternatePart(MediaTypeNames.Text.Plain);
+                if (alt != null) yield return alt;
 
-		private static FormPart GetAlternatePart(this MailMessage message, string contentType)
-		{
-			var alt = message.AlternateViews.FirstOrDefault(v => v.ContentType.MediaType == contentType);
+                alt = message.GetAlternatePart(MediaTypeNames.Text.Html);
+                if (alt != null) yield return alt;
+            }
+        }
 
-			if (alt != null)
-			{
-				using (var sr = new StreamReader(alt.ContentStream))
-					return new SimpleFormPart(contentType == MediaTypeNames.Text.Plain ? "text" : "html", sr.ReadToEnd());
-			}
+        private static FormPart GetAlternatePart(this MailMessage message, string contentType)
+        {
+            var alt = message.AlternateViews.FirstOrDefault(v => v.ContentType.MediaType == contentType);
 
-			return null;
-		}
-	}
+            if (alt != null)
+            {
+                using (var sr = new StreamReader(alt.ContentStream))
+                    return new SimpleFormPart(contentType == MediaTypeNames.Text.Plain ? "text" : "html", sr.ReadToEnd());
+            }
+
+            return null;
+        }
+    }
 }

@@ -154,10 +154,80 @@ namespace Typesafe.Mailgun.Tests
 			result.AssertContains("html", "<h1>html</h1>");
 		}
 
-		/// <summary>
-		/// Factory method for spinning up a MailMessage to play with.
-		/// </summary>
-		private MailMessage BuildMessage(Action<MailMessage> mutator = null)
+        #region MailgunMessage
+        [Test]
+        public void Build_MailgunMessage_AddsCampaign()
+        {
+            var message = BuildMailgunMessage(m => m.Campaign = "campaign value");
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("o:campaign", "campaign value");
+        }
+
+        [Test]
+        public void Build_MailgunMessage_AddsTagPart()
+        {
+            var message = BuildMailgunMessage(m => m.Tags.Add("foobar"));
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("o:tag", "foobar");
+        }
+
+        [Test]
+        public void Build_MailgunMessage_AddsVarPart()
+        {
+            var message = BuildMailgunMessage(m => m.Vars.Add("myvar", 123));
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("v:myvar", "123");
+        }
+
+        [Test]
+        public void Build_MailgunMessage_AddsDeliveryTime()
+        {
+            var message = BuildMailgunMessage(m => m.DeliveryTime = DateTime.Parse("2016-11-20"));
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("o:deliverytime", "Sun, 20 Nov 2016 00:00:00 GMT");
+        }
+
+        [Test]
+        public void Build_MailgunMessage_AddsHeaderPart()
+        {
+            var message = BuildMailgunMessage(m => m.CustomHeaders.Add("X-Foobar", "Some value"));
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("h:X-Foobar", "Some value");
+        }
+
+        [Test]
+        public void Build_MailgunMessage_AddsYesNoBool()
+        {
+            var message = BuildMailgunMessage(m => m.Dkim = false);
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("o:dkim", "no");
+        }
+
+        [Test]
+        public void Build_MailgunMessage_AddsTrueFalseBool()
+        {
+            var message = BuildMailgunMessage(m => m.RequireTls = false);
+            var result = FormPartsBuilder.Build(message);
+            result.AssertContains("o:require-tls", "False");
+        }
+
+        private MailgunMessage BuildMailgunMessage(Action<MailgunMessage> mutator = null)
+        {
+            var sender = new MailAddress("somesender@mailinator.com", "Sender");
+            var recipient = new MailAddress("somerecipient@mailinator.com", "Recipient");
+            var message = new MailgunMessage(sender, recipient);
+
+            if (mutator != null)
+                mutator(message);
+
+            return message;
+        }
+        #endregion
+
+        /// <summary>
+        /// Factory method for spinning up a MailMessage to play with.
+        /// </summary>
+        private MailMessage BuildMessage(Action<MailMessage> mutator = null)
 		{
 			var sender = new MailAddress("somesender@mailinator.com", "Sender");
 			var recipient = new MailAddress("somerecipient@mailinator.com", "Recipient");
@@ -168,7 +238,8 @@ namespace Typesafe.Mailgun.Tests
 
 			return message;
 		}
-	}
+
+    }
 
 	internal static class FormPartsBuilderTestsExtensions
 	{
