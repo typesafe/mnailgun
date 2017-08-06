@@ -82,7 +82,7 @@ namespace Typesafe.Mailgun
 			if (message.Headers.AllKeys.Contains("References"))
 			{
 				// Grab the References Header
-				var References = message.Headers.GetValues("References");
+				var References = message.Headers["References"];
 				if (References != null)
 				{
 					result.Add(new SimpleFormPart("h:References", References));
@@ -92,7 +92,7 @@ namespace Typesafe.Mailgun
 			if (message.Headers.AllKeys.Contains("In-Reply-To"))
 			{
 				// Grab the References Header
-				var inReplyTo = message.Headers.GetValues("In-Reply-To");
+				var inReplyTo = message.Headers["In-Reply-To"];
 				if (inReplyTo != null)
 				{
 					result.Add(new SimpleFormPart("h:In-Reply-To", inReplyTo));
