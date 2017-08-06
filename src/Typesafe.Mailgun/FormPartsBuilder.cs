@@ -78,6 +78,26 @@ namespace Typesafe.Mailgun
 					}
 				}
 			}
+			
+			if (message.Headers.AllKeys.Contains("References"))
+			{
+				// Grab the References Header
+				var References = message.Headers.GetValues("References");
+				if (References != null)
+				{
+					result.Add(new SimpleFormPart("h:References", References));
+				}
+			}
+			
+			if (message.Headers.AllKeys.Contains("In-Reply-To"))
+			{
+				// Grab the References Header
+				var inReplyTo = message.Headers.GetValues("In-Reply-To");
+				if (inReplyTo != null)
+				{
+					result.Add(new SimpleFormPart("h:In-Reply-To", inReplyTo));
+				}
+			}
 
 			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
