@@ -4,32 +4,43 @@ using System.Net.Mail;
 
 namespace Typesafe.Mailgun.Http
 {
-	/// <summary>
-	/// Represents an multipart form part for a file attachment.
-	/// </summary>
-	public class AttachmentFormPart : FormPart
-	{
-		private readonly Attachment attachment;
+    /// <summary>
+    /// Represents an multipart form part for a file attachment.
+    /// </summary>
+    public class AttachmentFormPart : FormPart
+    {
+        private readonly AttachmentBase attachment;
 
-		public AttachmentFormPart(Attachment attachment)
-		{
-			this.attachment = attachment;
-		}
+        public AttachmentFormPart(AttachmentBase attachment)
+        {
+            this.attachment = attachment;
+        }
 
-		public Attachment Attachment { get { return attachment; } }
+        public AttachmentBase Attachment { get { return attachment; } }
 
-		public override void WriteTo(StreamWriter writer, string boundary)
-		{
-			writer.Write("--{0}\r\nContent-Disposition: form-data; name=\"attachment\"; filename=\"{1}\"\r\nContent-Type: {2}\r\nContent-Transfer-Encoding: base64\r\n\r\n",
-				boundary, 
-				Attachment.Name,
-				Attachment.ContentType.MediaType);
+        public override void WriteTo(StreamWriter writer, string boundary)
+        {
+            if (attachment is Attachment regularAttachment)
+            {
+                writer.Write("--{0}\r\nContent-Disposition: form-data; name=\"attachment\"; filename=\"{1}\"\r\nContent-Type: {2}\r\nContent-Transfer-Encoding: base64\r\n\r\n",
+                    boundary,
+                    regularAttachment.Name,
+                    regularAttachment.ContentType.MediaType);
+            }
 
-			var bytes = new byte[Attachment.ContentStream.Length];
-			Attachment.ContentStream.Read(bytes, 0, (int) Attachment.ContentStream.Length);
+            if (attachment is LinkedResource linkedResource)
+            {
+                writer.Write("--{0}\r\nContent-Disposition: form-data; name=\"inline\"; filename=\"{1}\"\r\nContent-Type: {2}\r\nContent-Transfer-Encoding: base64\r\n\r\n",
+                    boundary,
+                    linkedResource.ContentId,
+                    linkedResource.ContentType.MediaType);
+            }
 
-			writer.Write(Convert.ToBase64String(bytes));
-			writer.Write("\r\n");
-		}
-	}
+            var bytes = new byte[Attachment.ContentStream.Length];
+            Attachment.ContentStream.Read(bytes, 0, (int)Attachment.ContentStream.Length);
+
+            writer.Write(Convert.ToBase64String(bytes));
+            writer.Write("\r\n");
+        }
+    }
 }
