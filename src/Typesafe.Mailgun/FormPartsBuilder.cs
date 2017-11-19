@@ -79,6 +79,24 @@ namespace Typesafe.Mailgun
                 }
             }
 
+            if (message.Headers.AllKeys.Contains("X-Mailgun-Native-Send"))
+            {
+                var nativeSend = message.Headers.GetValues("X-Mailgun-Native-Send")?.FirstOrDefault();
+                if (nativeSend == "yes")
+                {
+                    result.Add(new SimpleFormPart("o:native-send", "yes"));
+                }
+            }
+
+            if (message.Headers.AllKeys.Contains("X-Mailgun-Drop-Message"))
+            {
+                var dropMessage = message.Headers.GetValues("X-Mailgun-Drop-Message")?.FirstOrDefault();
+                if (dropMessage == "yes")
+                {
+                    result.Add(new SimpleFormPart("o:testmode", "yes"));
+                }
+            }
+
             result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
             result.AddRange(message.GetAlternatePartResources(MediaTypeNames.Text.Html));
 
@@ -122,15 +140,14 @@ namespace Typesafe.Mailgun
         private static List<AttachmentFormPart> GetAlternatePartResources(this MailMessage message, string contentType)
         {
             var alt = message.AlternateViews.FirstOrDefault(v => v.ContentType.MediaType == contentType);
-
+            var result = new List<AttachmentFormPart>();
             if (alt != null)
             {
-                var result = new List<AttachmentFormPart>();
                 result.AddRange(alt.LinkedResources.Select(attachment => new AttachmentFormPart(attachment)));
                 return result;
             }
 
-            return null;
+            return result;
         }
     }
 }
