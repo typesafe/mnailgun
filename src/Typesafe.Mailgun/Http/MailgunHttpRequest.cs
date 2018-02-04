@@ -6,43 +6,44 @@ using System.Text;
 
 namespace Typesafe.Mailgun.Http
 {
-	internal class MailgunHttpRequest
-	{
-		private readonly string boundary = Guid.NewGuid().ToString("N");
+    internal class MailgunHttpRequest
+    {
+        private readonly string boundary = Guid.NewGuid().ToString("N");
 
-		private readonly HttpWebRequest request;
+        private readonly HttpWebRequest request;
 
-		public MailgunHttpRequest(IMailgunAccountInfo accountInfo, string method, string relativePath)
-		{
-			request = WebRequest.Create(new Uri(accountInfo.DomainBaseUrl, relativePath)) as HttpWebRequest;
-			request.Method = method;
+        public MailgunHttpRequest(IMailgunAccountInfo accountInfo, string method, string relativePath, int timeout = 100000)
+        {
+            request = WebRequest.Create(new Uri(accountInfo.DomainBaseUrl, relativePath)) as HttpWebRequest;
+            request.Method = method;
+            request.Timeout = timeout;
 
-			// Note: ensure no preceding 401, request.PreAuthenticate does not work as you might expect
-			request.Headers.Add("Authorization", "basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("api:{0}", accountInfo.ApiKey))));
-		}
+            // Note: ensure no preceding 401, request.PreAuthenticate does not work as you might expect
+            request.Headers.Add("Authorization", "basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("api:{0}", accountInfo.ApiKey))));
+        }
 
-		public MailgunHttpResponse GetResponse()
-		{
-			try
-			{
-				return new MailgunHttpResponse(request.GetResponse() as HttpWebResponse);
-			}
-			catch (WebException ex)
-			{
-				return new MailgunHttpResponse(ex.Response as HttpWebResponse);
-			}
-		}
+        public MailgunHttpResponse GetResponse()
+        {
+            try
+            {
+                return new MailgunHttpResponse(request.GetResponse() as HttpWebResponse);
+            }
+            catch (WebException ex)
+            {
+                return new MailgunHttpResponse(ex.Response as HttpWebResponse);
+            }
+        }
 
-		public void SetFormParts(IEnumerable<FormPart> parts)
-		{
-			request.ContentType = "multipart/form-data; boundary=" + boundary;
+        public void SetFormParts(IEnumerable<FormPart> parts)
+        {
+            request.ContentType = "multipart/form-data; boundary=" + boundary;
 
-			using (var writer = new StreamWriter(request.GetRequestStream()))
-			{
-				foreach (var part in parts) part.WriteTo(writer, boundary);
+            using (var writer = new StreamWriter(request.GetRequestStream()))
+            {
+                foreach (var part in parts) part.WriteTo(writer, boundary);
 
-				writer.Write("--{0}--", boundary);
-			}
-		}
-	}
+                writer.Write("--{0}--", boundary);
+            }
+        }
+    }
 }

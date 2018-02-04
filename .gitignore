@@ -1,5 +1,7 @@
 obj
 bin
+packages
+.vs
 *.csproj.user
 *ReSharper*
 *resharper*

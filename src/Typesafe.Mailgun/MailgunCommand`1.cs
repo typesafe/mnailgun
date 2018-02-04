@@ -7,47 +7,47 @@ using Typesafe.Mailgun.Http;
 
 namespace Typesafe.Mailgun
 {
-	internal abstract class MailgunCommand<T> where T : CommandResult
-	{
-		private readonly string path;
-		private readonly string httpVerb;
+    internal abstract class MailgunCommand<T> where T : CommandResult
+    {
+        private readonly string path;
+        private readonly string httpVerb;
 
-		protected MailgunCommand(IMailgunAccountInfo accountInfo, string path, string httpVerb = "POST")
-		{
-			this.path = path;
-			this.httpVerb = httpVerb;
-			AccountInfo = accountInfo;
-		}
+        protected MailgunCommand(IMailgunAccountInfo accountInfo, string path, string httpVerb = "POST")
+        {
+            this.path = path;
+            this.httpVerb = httpVerb;
+            AccountInfo = accountInfo;
+        }
 
-		protected IMailgunAccountInfo AccountInfo { get; private set; }
+        protected IMailgunAccountInfo AccountInfo { get; private set; }
 
-		public T Invoke()
-		{
-			var request = new MailgunHttpRequest(AccountInfo, httpVerb, path);
+        public T Invoke(int timeout)
+        {
+            var request = new MailgunHttpRequest(AccountInfo, httpVerb, path, timeout);
 
-			request.SetFormParts(CreateFormParts());
+            request.SetFormParts(CreateFormParts());
 
-			var response = request.GetResponse();
+            var response = request.GetResponse();
 
-			ThrowIfBadStatusCode(response);
+            ThrowIfBadStatusCode(response);
 
-			return TranslateResponse(response);
-		}
+            return TranslateResponse(response);
+        }
 
-		private static void ThrowIfBadStatusCode(MailgunHttpResponse response)
-		{
-			if (response.StatusCode == HttpStatusCode.Unauthorized) throw new AuthenticationException();
+        private static void ThrowIfBadStatusCode(MailgunHttpResponse response)
+        {
+            if (response.StatusCode == HttpStatusCode.Unauthorized) throw new AuthenticationException();
 
-			if (response.StatusCode >= HttpStatusCode.InternalServerError) throw new Exception("Internal Server Error");
+            if (response.StatusCode >= HttpStatusCode.InternalServerError) throw new Exception("Internal Server Error");
 
-			if (response.StatusCode >= HttpStatusCode.BadRequest) throw new InvalidOperationException(response.Message);
-		}
+            if (response.StatusCode >= HttpStatusCode.BadRequest) throw new InvalidOperationException(response.Message);
+        }
 
-		protected internal virtual IEnumerable<FormPart> CreateFormParts()
-		{
-			return Enumerable.Empty<FormPart>();
-		}
+        protected internal virtual IEnumerable<FormPart> CreateFormParts()
+        {
+            return Enumerable.Empty<FormPart>();
+        }
 
-		public abstract T TranslateResponse(MailgunHttpResponse response);
-	}
+        public abstract T TranslateResponse(MailgunHttpResponse response);
+    }
 }

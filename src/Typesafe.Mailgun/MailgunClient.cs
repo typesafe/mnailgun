@@ -6,57 +6,59 @@ using Typesafe.Mailgun.Statistics;
 
 namespace Typesafe.Mailgun
 {
-	/// <summary>
-	/// Provides access to the Mailgun REST API.
-	/// </summary>
-	public class MailgunClient : IMailgunAccountInfo, IMailgunClient
-	{
-		/// <summary>
-		/// Initializes a new client for the specified domain and api key.
-		/// </summary>
-		public MailgunClient(string domain, string apiKey, int version)
-		{
-			DomainBaseUrl = new Uri(string.Format("https://api.mailgun.net/v{0}/", version) + domain + "/");
-			ApiKey = apiKey;
-		}
+    /// <summary>
+    /// Provides access to the Mailgun REST API.
+    /// </summary>
+    public class MailgunClient : IMailgunAccountInfo, IMailgunClient
+    {
+        /// <summary>
+        /// Initializes a new client for the specified domain and api key.
+        /// </summary>
+        public MailgunClient(string domain, string apiKey, int version)
+        {
+            DomainBaseUrl = new Uri(string.Format("https://api.mailgun.net/v{0}/", version) + domain + "/");
+            ApiKey = apiKey;
+        }
 
-		public Uri DomainBaseUrl { get; private set; }
+        public Uri DomainBaseUrl { get; private set; }
 
-		public string ApiKey { get; private set; }
+        public string ApiKey { get; private set; }
 
-		public SendMailCommandResult SendMail(MailMessage mailMessage)
-		{
-			return new SendMailCommand(this, mailMessage).Invoke();
-		}
+        public int Timeout { get; set; } = 180000;
 
-		public SendMailCommandResult SendBatchMail(MailMessage mailMessage)
-		{
-			return SendBatchMail(mailMessage, new Dictionary<string, IDictionary<string, object>>());
-		}
+        public SendMailCommandResult SendMail(MailMessage mailMessage)
+        {
+            return new SendMailCommand(this, mailMessage).Invoke(this.Timeout);
+        }
 
-		public SendMailCommandResult SendBatchMail(MailMessage mailMessage, IDictionary<string, IDictionary<string, object>> recipientVariables)
-		{
-			return new SendMailCommand(this, mailMessage, recipientVariables).Invoke();
-		}
+        public SendMailCommandResult SendBatchMail(MailMessage mailMessage)
+        {
+            return SendBatchMail(mailMessage, new Dictionary<string, IDictionary<string, object>>());
+        }
 
-		public IEnumerable<Route> GetRoutes(int skip, int take, out int count)
-		{
-			return new MailgunRouteQuery(this).Execute(skip, take, out count);
-		}
+        public SendMailCommandResult SendBatchMail(MailMessage mailMessage, IDictionary<string, IDictionary<string, object>> recipientVariables)
+        {
+            return new SendMailCommand(this, mailMessage, recipientVariables).Invoke(this.Timeout);
+        }
 
-		public Route CreateRoute(int priority, string description, RouteFilter expression, params RouteAction[] actions)
-		{
-			return new CreateRouteCommand(this, priority, description, expression, actions).Invoke().Route;
-		}
+        public IEnumerable<Route> GetRoutes(int skip, int take, out int count)
+        {
+            return new MailgunRouteQuery(this).Execute(skip, take, out count);
+        }
 
-		public CommandResult DeleteRoute(string routeId)
-		{
-			return new DeleteCommand(this, "../routes/" + routeId).Invoke();
-		}
+        public Route CreateRoute(int priority, string description, RouteFilter expression, params RouteAction[] actions)
+        {
+            return new CreateRouteCommand(this, priority, description, expression, actions).Invoke(this.Timeout).Route;
+        }
 
-		public IEnumerable<MailgunStatEntry> GetStats(int skip, int take, MailgunEventTypes eventTypes, out int count)
-		{
-			return new MailgunStatsQuery(this, eventTypes).Execute(skip, take, out count);
-		}
-	}
+        public CommandResult DeleteRoute(string routeId)
+        {
+            return new DeleteCommand(this, "../routes/" + routeId).Invoke(this.Timeout);
+        }
+
+        public IEnumerable<MailgunStatEntry> GetStats(int skip, int take, MailgunEventTypes eventTypes, out int count)
+        {
+            return new MailgunStatsQuery(this, eventTypes).Execute(skip, take, out count);
+        }
+    }
 }
