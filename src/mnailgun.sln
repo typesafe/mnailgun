@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun.Tests", "Typesafe.Mailgun.Tests\Typesafe.Mailgun.Tests.csproj", "{7FA60929-7721-47DC-B9DC-39643E3B9D36}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun", "Typesafe.Mailgun\Typesafe.Mailgun.csproj", "{38A5D96D-36BC-4F37-9477-CD18FB32563B}"
@@ -30,5 +32,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DCE20E45-6C98-41D9-83FC-113205C22E1B}
 	EndGlobalSection
 EndGlobal

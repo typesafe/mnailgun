@@ -1,90 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{38A5D96D-36BC-4F37-9477-CD18FB32563B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Typesafe.Mailgun</RootNamespace>
-    <AssemblyName>Typesafe.Mailgun</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\..\bin\Typesafe.Mailgun.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="DeleteCommand.cs" />
-    <Compile Include="Extensions\MailMessageExtensions.cs" />
-    <Compile Include="FormPartsBuilder.cs" />
-    <Compile Include="Http\MailgunHttpResponse.cs" />
-    <Compile Include="IMailgunClient.cs" />
-    <Compile Include="MailgunCommand.cs" />
-    <Compile Include="CommandResult.cs" />
-    <Compile Include="Extensions\Json\ConversionExtensions.cs" />
-    <Compile Include="Http\AttachmentFormPart.cs" />
-    <Compile Include="Http\FormPart.cs" />
-    <Compile Include="Http\SimpleFormPart.cs" />
-    <Compile Include="Http\FormPartExtensions.cs" />
-    <Compile Include="IMailgunAccountInfo.cs" />
-    <Compile Include="MailgunClient.cs" />
-    <Compile Include="Http\MailgunHttpRequest.cs" />
-    <Compile Include="MailgunCommand`1.cs" />
-    <Compile Include="MailgunQuery.cs" />
-    <Compile Include="MailgunResource.cs" />
-    <Compile Include="Routing\CreateRouteCommand.cs" />
-    <Compile Include="Routing\CreateRouteCommandResult.cs" />
-    <Compile Include="Routing\MailgunRouteQuery.cs" />
-    <Compile Include="SendMailCommand.cs" />
-    <Compile Include="SendMailCommandResult.cs" />
-    <Compile Include="Statistics\MailgunStatEntry.cs" />
-    <Compile Include="MailgunEventTypes.cs" />
-    <Compile Include="Statistics\MailgunStatsQuery.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Routing\Route.cs" />
-    <Compile Include="Routing\RouteAction.cs" />
-    <Compile Include="Routing\RouteFilter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
