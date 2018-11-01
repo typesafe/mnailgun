@@ -7,6 +7,6 @@ namespace Typesafe.Mailgun
 			Id = id;
 		}
 
-		public string Id { get; set; }
+		public string Id { get; }
 	}
 }

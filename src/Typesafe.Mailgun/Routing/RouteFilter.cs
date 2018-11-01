@@ -1,3 +1,4 @@
+
 namespace Typesafe.Mailgun.Routing
 {
 	public class RouteFilter
@@ -9,12 +10,12 @@ namespace Typesafe.Mailgun.Routing
 
 		public static RouteFilter MatchRecipient(string mailPattern)
 		{
-			return new RouteFilter(string.Format("match_recipient(\"{0}\")", mailPattern));
+			return new RouteFilter($"match_recipient(\"{mailPattern}\")");
 		}
 
 		public static RouteFilter MatchHeader(string header, string pattern)
 		{
-			return new RouteFilter(string.Format("match_header(\"{0}\", \"{1}\")", header, pattern));
+			return new RouteFilter($"match_header(\"{header}\", \"{pattern}\")");
 		}
 
 		public static RouteFilter CatchAll()
@@ -22,8 +23,11 @@ namespace Typesafe.Mailgun.Routing
 			return new RouteFilter("catch_all()");
 		}
 
-		public string Expression { get; private set; }
+		public string Expression { get; }
 
-		public override string ToString() { return Expression; }
+		public override string ToString()
+		{
+			return Expression;
+		}
 	}
 }

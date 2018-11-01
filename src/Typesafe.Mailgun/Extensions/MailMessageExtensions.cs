@@ -19,7 +19,7 @@ namespace Typesafe.Mailgun.Extensions
 
 		public static void AddVariable(this MailMessage mailMessage, string name, string value)
 		{
-			mailMessage.Headers.Add("X-Mailgun-Variables", string.Format("{{\"{0}\": \"{1}\"}}", name, value));
+			mailMessage.Headers.Add("X-Mailgun-Variables", $"{{\"{name}\": \"{value}\"}}");
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace Typesafe.Mailgun
 		{
 			var json = ExecuteRequest(skip, take).Body;
 
-			count = (int)json.total_count.Value;
+			count = (int) json.total_count.Value;
 
 			var ret = new List<T>();
 
@@ -29,19 +29,16 @@ namespace Typesafe.Mailgun
 			return ret;
 		}
 
-		protected IMailgunAccountInfo AccountInfo { get; private set; }
+		protected IMailgunAccountInfo AccountInfo { get; }
 
-		protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalParameters
-		{
-			get { return Enumerable.Empty<KeyValuePair<string, string>>(); }
-		}
+		protected virtual IEnumerable<KeyValuePair<string, string>> AdditionalParameters => Enumerable.Empty<KeyValuePair<string, string>>();
 
 		private MailgunHttpResponse ExecuteRequest(int skip, int take)
 		{
-			var url = string.Format("{0}?skip={1}&take={2}", path, skip, take);
+			var url = $"{path}?skip={skip}&take={take}";
 			foreach (var additionalParameter in AdditionalParameters)
 			{
-				url += string.Format("&{0}={1}", additionalParameter.Key, additionalParameter.Value);
+				url += $"&{additionalParameter.Key}={additionalParameter.Value}";
 			}
 
 			return new MailgunHttpRequest(AccountInfo, "GET", url).GetResponse();

@@ -6,11 +6,11 @@ namespace Typesafe.Mailgun.Statistics
 {
 	internal class MailgunStatsQuery : MailgunQuery<MailgunStatEntry>
 	{
-		private readonly MailgunEventTypes eventTypes;
+		private readonly MailgunEventTypes _eventTypes;
 
 		public MailgunStatsQuery(IMailgunAccountInfo accountInfo, MailgunEventTypes eventTypes) : base(accountInfo, "stats")
 		{
-			this.eventTypes = eventTypes;
+			_eventTypes = eventTypes;
 		}
 
 		protected override IEnumerable<KeyValuePair<string, string>> AdditionalParameters
@@ -18,9 +18,9 @@ namespace Typesafe.Mailgun.Statistics
 			get
 			{
 				var events = Enum.GetValues(typeof(MailgunEventTypes)).OfType<MailgunEventTypes>()
-					.Where(value => eventTypes.HasFlag(value))
+					.Where(value => _eventTypes.HasFlag(value))
 					.Select(value => value.ToString().ToLower());
-				
+
 				return new[] {new KeyValuePair<string, string>("event", string.Join(",", events))};
 			}
 		}

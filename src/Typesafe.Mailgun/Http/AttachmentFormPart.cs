@@ -9,19 +9,17 @@ namespace Typesafe.Mailgun.Http
 	/// </summary>
 	public class AttachmentFormPart : FormPart
 	{
-		private readonly Attachment attachment;
-
 		public AttachmentFormPart(Attachment attachment)
 		{
-			this.attachment = attachment;
+			Attachment = attachment;
 		}
 
-		public Attachment Attachment { get { return attachment; } }
+		public Attachment Attachment { get; }
 
 		public override void WriteTo(StreamWriter writer, string boundary)
 		{
 			writer.Write("--{0}\r\nContent-Disposition: form-data; name=\"attachment\"; filename=\"{1}\"\r\nContent-Type: {2}\r\nContent-Transfer-Encoding: base64\r\n\r\n",
-				boundary, 
+				boundary,
 				Attachment.Name,
 				Attachment.ContentType.MediaType);
 

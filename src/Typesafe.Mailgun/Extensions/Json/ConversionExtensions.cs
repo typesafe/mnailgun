@@ -18,7 +18,7 @@ namespace Typesafe.Mailgun.Extensions.Json
 				Id = item.id.Value,
 				Description = item.description.Value,
 				CreatedAt = DateTime.Parse(item.created_at.Value),
-				Priority = (int)item.priority.Value,
+				Priority = (int) item.priority.Value,
 				Filter = new RouteFilter(item.expression.Value),
 				Actions = actions.ToArray()
 			};

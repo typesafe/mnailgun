@@ -1,8 +1,5 @@
 namespace Typesafe.Mailgun
 {
-	/// <summary>
-	/// 
-	/// </summary>
 	public class CommandResult
 	{
 		public CommandResult(string message)
@@ -10,8 +7,11 @@ namespace Typesafe.Mailgun
 			Message = message;
 		}
 
-		public string Message { get; private set; }
+		public string Message { get; }
 
-		public override string ToString() { return Message; }
+		public override string ToString()
+		{
+			return Message;
+		}
 	}
 }

@@ -1,9 +1,26 @@
 = mnailgun Release Notes
 
+== 3.0.0
 
-== Latest Version (0.7.0)
+- Migrate to netstandard2.0 (thanks to Mongkon Eiadon)
 
-- Add support for ReployTo (thanks to Grímur Daníelsson)
+== 2.0.0
+
+- remove obsolete mailbox support
+- Adds the ability to apply custom variables to your email messages (thanks to ProNotion)
+- Add support for custom data (thanks to Brandon Chothia)
+
+
+== 1.0.0
+
+- add overload to specify version of API
+- Fixed ReadJson on MailgunHttpResponse (thanks to Raphael ATALLAH)
+- Added the ability to add recipient variables (thanks to Zac Marcus)
+- fix typo in README (thanks to ITmeze Michal Zygula)
+
+== 0.7.0
+
+- Add support for ReplyTo (thanks to Grímur Daníelsson)
 
 == Version 0.6.0
 

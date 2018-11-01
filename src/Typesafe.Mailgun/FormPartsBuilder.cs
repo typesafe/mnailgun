@@ -20,12 +20,14 @@ namespace Typesafe.Mailgun
 		public static List<FormPart> Build(MailMessage message, IDictionary<string, IDictionary<string, object>> recipientVariables)
 		{
 			if (message == null)
+			{
 				return new List<FormPart>();
+			}
 
 			var result = new List<FormPart>
 			{
 				new SimpleFormPart("from", message.From.ToString()),
-				new SimpleFormPart("to",string.Join(", ", message.To)),
+				new SimpleFormPart("to", string.Join(", ", message.To)),
 				new SimpleFormPart("subject", message.Subject),
 			};
 
@@ -40,7 +42,7 @@ namespace Typesafe.Mailgun
 			if (message.Bcc.Any())
 				result.Add(new SimpleFormPart("bcc", string.Join(", ", message.Bcc)));
 
-			if(message.ReplyToList.Any())
+			if (message.ReplyToList.Any())
 				result.Add(new SimpleFormPart("h:Reply-To", string.Join(", ", message.ReplyToList)));
 
 			// Check for the existence of any Mailgun-Variables headers

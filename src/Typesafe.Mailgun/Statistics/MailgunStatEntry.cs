@@ -2,9 +2,6 @@ using System;
 
 namespace Typesafe.Mailgun.Statistics
 {
-	/// <summary>
-	/// 
-	/// </summary>
 	public class MailgunStatEntry : MailgunResource
 	{
 		public DateTime Date { get; set; }

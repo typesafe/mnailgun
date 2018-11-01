@@ -1,3 +1,4 @@
+
 namespace Typesafe.Mailgun.Routing
 {
 	internal class CreateRouteCommandResult : CommandResult
@@ -7,6 +8,6 @@ namespace Typesafe.Mailgun.Routing
 			Route = route;
 		}
 
-		public Route Route { get; private set; }
+		public Route Route { get; }
 	}
 }

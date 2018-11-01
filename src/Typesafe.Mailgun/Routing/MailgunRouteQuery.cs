@@ -1,5 +1,3 @@
-using System;
-using System.Security.Authentication;
 using Typesafe.Mailgun.Extensions.Json;
 
 namespace Typesafe.Mailgun.Routing
@@ -10,7 +8,7 @@ namespace Typesafe.Mailgun.Routing
 
 		public override Route MapJsonItem(dynamic item)
 		{
-			return ((object)item).ToRoute();
+			return ((object) item).ToRoute();
 		}
 	}
 }

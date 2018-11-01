@@ -19,7 +19,7 @@ namespace Typesafe.Mailgun
 			AccountInfo = accountInfo;
 		}
 
-		protected IMailgunAccountInfo AccountInfo { get; private set; }
+		protected IMailgunAccountInfo AccountInfo { get; }
 
 		public T Invoke()
 		{

@@ -14,11 +14,11 @@ namespace Typesafe.Mailgun.Http
 
 		public MailgunHttpRequest(IMailgunAccountInfo accountInfo, string method, string relativePath)
 		{
-			request = WebRequest.Create(new Uri(accountInfo.DomainBaseUrl, relativePath)) as HttpWebRequest;
+			request = (HttpWebRequest)WebRequest.Create(new Uri(accountInfo.DomainBaseUrl, relativePath));
 			request.Method = method;
 
 			// Note: ensure no preceding 401, request.PreAuthenticate does not work as you might expect
-			request.Headers.Add("Authorization", "basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(String.Format("api:{0}", accountInfo.ApiKey))));
+			request.Headers.Add("Authorization", "basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes($"api:{accountInfo.ApiKey}")));
 		}
 
 		public MailgunHttpResponse GetResponse()

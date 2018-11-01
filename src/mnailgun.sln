@@ -7,13 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun.Tests", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Typesafe.Mailgun", "Typesafe.Mailgun\Typesafe.Mailgun.csproj", "{38A5D96D-36BC-4F37-9477-CD18FB32563B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1680AF82-A416-4F6B-9166-7710C60F6E4F}"
-	ProjectSection(SolutionItems) = preProject
-		..\nuget\mnailgun.nuspec = ..\nuget\mnailgun.nuspec
-		nuget.config = nuget.config
-		..\rakefile.rb = ..\rakefile.rb
-		..\VERSION.txt = ..\VERSION.txt
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionFolder", "{45B8D2B2-CC7D-4F3B-89CC-70A24773D4A6}"
+ProjectSection(SolutionItems) = preProject
+	..\license.txt = ..\license.txt
+	..\README.md = ..\README.md
+	..\RELEASE-NOTES.md = ..\RELEASE-NOTES.md
+EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

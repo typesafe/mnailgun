@@ -12,12 +12,12 @@ namespace Typesafe.Mailgun.Routing
 
 		public static RouteAction MailForward(MailAddress address)
 		{
-			return new RouteAction(string.Format("forward(\"{0}\")", address.Address));
+			return new RouteAction($"forward(\"{address.Address}\")");
 		}
 
 		public static RouteAction InvokeWebHook(Uri url)
 		{
-			return new RouteAction(string.Format("forward(\"{0}\")", url));
+			return new RouteAction($"forward(\"{url}\")");
 		}
 
 		public static RouteAction Stop()
@@ -25,8 +25,11 @@ namespace Typesafe.Mailgun.Routing
 			return new RouteAction("stop()");
 		}
 
-		public string Expression { get; private set; }
+		public string Expression { get; }
 
-		public override string ToString() { return Expression; }
+		public override string ToString()
+		{
+			return Expression;
+		}
 	}
 }

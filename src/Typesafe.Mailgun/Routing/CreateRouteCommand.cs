@@ -36,7 +36,7 @@ namespace Typesafe.Mailgun.Routing
 
 		public override CreateRouteCommandResult TranslateResponse(MailgunHttpResponse response)
 		{
-			return new CreateRouteCommandResult(response.Message, ((object)response.Body.route).ToRoute());
+			return new CreateRouteCommandResult(response.Message, ((object) response.Body.route).ToRoute());
 		}
 	}
 }

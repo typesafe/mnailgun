@@ -4,18 +4,13 @@ About mnailgun
 mnailgun is a wrapper library for the Mailgun REST API. It provides a MailgunClient class
 that allows you to send messages, register domains, create mailboxes, manage routes, etc.
 
-Installing mnailgun
--------------------
-
-Install the Nuget package mnailgun.
-
 Getting started
 ---------------
 
 The mailgun API is exposed through the `Typesafe.MailgunClient`. All supported operations are 
 exposed through this client.
 
-	var client = new MailgunClient("samples.mailgun.org", "key-3ax6xnjp29jd6fds4gc373sgvjxteol0");
+	var client = new MailgunClient("<domain>", "<API key>");
 	
 	// use client to send mail, create routes, etc.
 
@@ -51,10 +46,16 @@ Getting statistics
 
 Stats can be retrieved with `GetStats` method of the MailgunClient.
 
+Running Tests
+-------------
+
+1. Make sure you replace the placeholders with you domain and API key in `src/Typesafe.Mailgun.Tests/MailgunClientBuilder.cs`.
+2. run the XUnit tests, with your preferred IDE/runner.
+
 License
 =======
 
-Copyright (c) 2011 Gino Heyman.
+Copyright (c) 2011-2018 Gino Heyman.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
