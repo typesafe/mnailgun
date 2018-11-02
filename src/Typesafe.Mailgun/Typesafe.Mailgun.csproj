@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <Version>3.0.1</Version>
+        <Version>3.0.2</Version>
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup>
         <PackageId>mnailgun</PackageId>
-        <PackageVersion>3.0.1</PackageVersion>
+        <PackageVersion>3.0.2</PackageVersion>
         <PackageTags>mailgun email</PackageTags>
         <PackageProjectUrl>https://github.com/typesafe/mnailgun</PackageProjectUrl>
         <PackageLicenseUrl>https://raw.github.com/typesafe/mnailgun/master/license.txt</PackageLicenseUrl>
@@ -20,6 +20,13 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
         <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include=".nupkg-files\icon.png">
+            <Pack>true</Pack>
+            <PackagePath>/</PackagePath>
+        </Content>
     </ItemGroup>
 
 </Project>
