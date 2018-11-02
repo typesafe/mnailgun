@@ -12,6 +12,7 @@ ProjectSection(SolutionItems) = preProject
 	..\license.txt = ..\license.txt
 	..\README.md = ..\README.md
 	..\RELEASE-NOTES.md = ..\RELEASE-NOTES.md
+	..\pack.sh = ..\pack.sh
 EndProjectSection
 EndProject
 Global
