@@ -12,10 +12,11 @@ namespace Typesafe.Mailgun.Http
 
 		private readonly HttpWebRequest request;
 
-		public MailgunHttpRequest(IMailgunAccountInfo accountInfo, string method, string relativePath)
+		public MailgunHttpRequest(IMailgunAccountInfo accountInfo, string method, string relativePath, int timeout = 100000)
 		{
 			request = (HttpWebRequest)WebRequest.Create(new Uri(accountInfo.DomainBaseUrl, relativePath));
 			request.Method = method;
+			request.Timeout = timeout;
 
 			// Note: ensure no preceding 401, request.PreAuthenticate does not work as you might expect
 			request.Headers.Add("Authorization", "basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes($"api:{accountInfo.ApiKey}")));
