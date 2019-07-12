@@ -81,6 +81,15 @@ namespace Typesafe.Mailgun
 				}
 			}
 
+			if (message.Headers.AllKeys.Contains("X-Mailgun-Drop-Message"))
+			{
+				var dropMessage = message.Headers.GetValues("X-Mailgun-Drop-Message")?.FirstOrDefault();
+				if (dropMessage == "yes")
+				{
+					result.Add(new SimpleFormPart("o:testmode", "yes"));
+				}
+			}
+
 			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
 			return result;
