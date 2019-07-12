@@ -82,6 +82,7 @@ namespace Typesafe.Mailgun
 			}
 
 			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
+			result.AddRange(message.GetAlternatePartResources(MediaTypeNames.Text.Html));
 
 			return result;
 		}
@@ -118,6 +119,21 @@ namespace Typesafe.Mailgun
 			}
 
 			return null;
+		}
+
+		private static List<AttachmentFormPart> GetAlternatePartResources(this MailMessage message, string contentType)
+		{
+			var result = new List<AttachmentFormPart>();
+
+			var alt = message.AlternateViews.FirstOrDefault(v => v.ContentType.MediaType == contentType);
+
+			if (alt != null)
+			{
+				result.AddRange(alt.LinkedResources.Select(attachment => new AttachmentFormPart(attachment)));
+				return result;
+			}
+
+			return result;
 		}
 	}
 }
