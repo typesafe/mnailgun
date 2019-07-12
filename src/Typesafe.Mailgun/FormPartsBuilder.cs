@@ -81,6 +81,15 @@ namespace Typesafe.Mailgun
 				}
 			}
 
+			if (message.Headers.AllKeys.Contains("X-Mailgun-Native-Send"))
+			{
+				var nativeSend = message.Headers.GetValues("X-Mailgun-Native-Send")?.FirstOrDefault();
+				if (nativeSend == "yes")
+				{
+					result.Add(new SimpleFormPart("o:native-send", "yes"));
+				}
+			}
+
 			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
 			return result;
