@@ -20,13 +20,25 @@ namespace Typesafe.Mailgun
 			ApiKey = apiKey;
 		}
 
+		/// <summary>
+		/// Initializes a new client for the specified domain and api key with a timeout.
+		/// </summary>
+		public MailgunClient(string domain, string apiKey, int version, int timeout)
+		{
+			DomainBaseUrl = new Uri(string.Format("https://api.mailgun.net/v{0}/", version) + domain + "/");
+			ApiKey = apiKey;
+			Timeout = timeout;
+		}
+
 		public Uri DomainBaseUrl { get; private set; }
 
 		public string ApiKey { get; private set; }
 
+		public int Timeout { get; private set; } = 100000;
+
 		public SendMailCommandResult SendMail(MailMessage mailMessage)
 		{
-			return new SendMailCommand(this, mailMessage).Invoke();
+			return new SendMailCommand(this, mailMessage).Invoke(Timeout);
 		}
 
 		public SendMailCommandResult SendBatchMail(MailMessage mailMessage)
@@ -36,7 +48,7 @@ namespace Typesafe.Mailgun
 
 		public SendMailCommandResult SendBatchMail(MailMessage mailMessage, IDictionary<string, IDictionary<string, object>> recipientVariables)
 		{
-			return new SendMailCommand(this, mailMessage, recipientVariables).Invoke();
+			return new SendMailCommand(this, mailMessage, recipientVariables).Invoke(Timeout);
 		}
 
 		public IEnumerable<Route> GetRoutes(int skip, int take, out int count)
@@ -46,12 +58,12 @@ namespace Typesafe.Mailgun
 
 		public Route CreateRoute(int priority, string description, RouteFilter expression, params RouteAction[] actions)
 		{
-			return new CreateRouteCommand(this, priority, description, expression, actions).Invoke().Route;
+			return new CreateRouteCommand(this, priority, description, expression, actions).Invoke(Timeout).Route;
 		}
 
 		public CommandResult DeleteRoute(string routeId)
 		{
-			return new DeleteCommand(this, "../routes/" + routeId).Invoke();
+			return new DeleteCommand(this, "../routes/" + routeId).Invoke(Timeout);
 		}
 
 		public IEnumerable<MailgunStatEntry> GetStats(int skip, int take, MailgunEventTypes eventTypes, out int count)
