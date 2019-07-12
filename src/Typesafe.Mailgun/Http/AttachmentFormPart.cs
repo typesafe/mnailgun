@@ -9,19 +9,30 @@ namespace Typesafe.Mailgun.Http
 	/// </summary>
 	public class AttachmentFormPart : FormPart
 	{
-		public AttachmentFormPart(Attachment attachment)
+		public AttachmentFormPart(AttachmentBase attachment)
 		{
 			Attachment = attachment;
 		}
 
-		public Attachment Attachment { get; }
+		public AttachmentBase Attachment { get; }
 
 		public override void WriteTo(StreamWriter writer, string boundary)
 		{
-			writer.Write("--{0}\r\nContent-Disposition: form-data; name=\"attachment\"; filename=\"{1}\"\r\nContent-Type: {2}\r\nContent-Transfer-Encoding: base64\r\n\r\n",
-				boundary,
-				Attachment.Name,
-				Attachment.ContentType.MediaType);
+			if (Attachment is Attachment regularAttachment)
+			{
+				writer.Write("--{0}\r\nContent-Disposition: form-data; name=\"attachment\"; filename=\"{1}\"\r\nContent-Type: {2}\r\nContent-Transfer-Encoding: base64\r\n\r\n",
+					boundary,
+					regularAttachment.Name,
+					regularAttachment.ContentType.MediaType);
+			}
+
+			if (Attachment is LinkedResource linkedResource)
+			{
+				writer.Write("--{0}\r\nContent-Disposition: form-data; name=\"inline\"; filename=\"{1}\"\r\nContent-Type: {2}\r\nContent-Transfer-Encoding: base64\r\n\r\n",
+					boundary,
+					linkedResource.ContentId,
+					linkedResource.ContentType.MediaType);
+			}
 
 			var bytes = new byte[Attachment.ContentStream.Length];
 			Attachment.ContentStream.Read(bytes, 0, (int) Attachment.ContentStream.Length);
