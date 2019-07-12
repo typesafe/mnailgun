@@ -21,9 +21,9 @@ namespace Typesafe.Mailgun
 
 		protected IMailgunAccountInfo AccountInfo { get; }
 
-		public T Invoke()
+		public T Invoke(int timeout)
 		{
-			var request = new MailgunHttpRequest(AccountInfo, httpVerb, path);
+			var request = new MailgunHttpRequest(AccountInfo, httpVerb, path, timeout);
 
 			request.SetFormParts(CreateFormParts());
 
