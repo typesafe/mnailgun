@@ -81,7 +81,22 @@ namespace Typesafe.Mailgun
 				}
 			}
 
-			result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
+            // Check for the existense of Mailgun delayed send headers
+            if (message.Headers.AllKeys.Contains("X-Mailgun-Deliver-By"))
+            {
+                // Grab the Mailgun tag header values
+                var tagHeaders = message.Headers.GetValues("X-Mailgun-Deliver-By");
+                if (tagHeaders != null)
+                {
+                    // Iterate over the collection and add each tag header to the result
+                    foreach (var tag in tagHeaders)
+                    {
+                        result.Add(new SimpleFormPart("o:deliverytime", tag));
+                    }
+                }
+            }
+
+            result.AddRange(message.Attachments.Select(attachment => new AttachmentFormPart(attachment)));
 
 			return result;
 		}
