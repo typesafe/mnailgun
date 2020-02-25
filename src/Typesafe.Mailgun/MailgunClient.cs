@@ -14,9 +14,16 @@ namespace Typesafe.Mailgun
 		/// <summary>
 		/// Initializes a new client for the specified domain and api key.
 		/// </summary>
-		public MailgunClient(string domain, string apiKey, int version)
+		public MailgunClient(string domain, string apiKey, int version, bool euDomain = false)
 		{
-			DomainBaseUrl = new Uri(string.Format("https://api.mailgun.net/v{0}/", version) + domain + "/");
+			var apiUrl = "https://api.mailgun.net";
+
+			if (euDomain)
+			{
+				apiUrl = "https://api.eu.mailgun.net";
+			}
+
+			DomainBaseUrl = new Uri($"{apiUrl}/v{version}/{domain}/");
 			ApiKey = apiKey;
 		}
 
